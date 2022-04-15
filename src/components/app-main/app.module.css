@@ -1,5 +1,6 @@
-.main {
-    padding: 0 330px 0 330px;
+.app {
+    margin: 0 auto;
+    max-width: 1280px;
 }
 
 .sections {

@@ -13,7 +13,7 @@ const IngredientCategory = ({categoryData, title, id}) => {
         </h3>
         <div className={style.category}>    
             { categoryData.map((el) => {
-                return <Ingredient  count={1} ingredientData={el} key={Ingredient._id}/>
+                return <Ingredient  count={1} ingredientData={el} key={el._id}/>
             })}
         </div>
         </>  
@@ -22,7 +22,7 @@ const IngredientCategory = ({categoryData, title, id}) => {
 
 IngredientCategory.propTypes = {
     title: PropTypes.string.isRequired,
-    titleId: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
     categoryData: PropTypes.arrayOf(ingredientsPropsType.isRequired).isRequired,
 };
 

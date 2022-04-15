@@ -9,9 +9,9 @@ const BurgerIngredients = ({ingredients}) => {
     const [currentTab, setCurrentTab] = React.useState('buns')
 
     /* отфильтровать игредиенты для передачи в пропсы компонентов категории*/
-    let buns = ingredients.filter(el => el.type === 'bun');
-    let sauces = ingredients.filter(el => el.type === 'sauce');
-    let main = ingredients.filter(el => el.type === 'main');
+    const buns = ingredients.filter(el => el.type === 'bun');
+    const sauces = ingredients.filter(el => el.type === 'sauce');
+    const main = ingredients.filter(el => el.type === 'main');
     
 
     return (

@@ -22,7 +22,10 @@ const BurgerConstructor = ({ingredientsInBurger}) => {
                 <div className={`pr-1 ${style.in_burger}`}>
                     {ingredientsInBurger.filter(el => el.type === 'main').map(el => {
                         return (
-                            <div className={style.in_burger_elem}>
+                            <div 
+                                className={style.in_burger_elem}
+                                key={el._id}
+                                >
                                 <DragIcon type="primary"/>
                                 <ConstructorElement
                                     text={el.name}
