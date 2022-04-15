@@ -1,5 +1,6 @@
 import React from "react";  
-
+import PropTypes from 'prop-types';
+import {ingredientsPropsType} from '../../utils/prop-type';
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import style from '../burger-constructor/burger-constructor.module.css';
@@ -51,6 +52,10 @@ const BurgerConstructor = ({ingredientsInBurger}) => {
             </div>
         </section>
     )
+}
+
+BurgerConstructor.propTypes = {
+    ingredientsInBurger: PropTypes.arrayOf(ingredientsPropsType.isRequired).isRequired,
 }
 
 export default React.memo(BurgerConstructor);
