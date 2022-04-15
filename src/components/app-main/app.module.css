@@ -1,0 +1,26 @@
+.main {
+    padding: 0 330px 0 330px;
+}
+
+.sections {
+    display: flex;
+    justify-content: space-between;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    background: #2F2F37;
+}
+
+::-webkit-scrollbar-thumb {
+    width: 8px;
+    background: #8585AD;
+    border: 2px solid #2F2F37;
+	border-radius: 6px;
+}
+
+::-webkit-scrollbar-track {
+    width: 8px;
+    background: #2F2F37;
+}
+

@@ -1,0 +1,22 @@
+.ingredient {
+    position: relative;
+    width: 272px;
+}
+
+.ingredient:nth-child(odd) {
+    margin: 0 24px 0 16px;
+}
+
+.cost {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.text {
+    text-align: center;
+}
+
+.img {
+    transform: translateX(16px);
+}
