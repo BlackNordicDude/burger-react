@@ -13,7 +13,7 @@ const BurgerIngredients = ({ingredients}) => {
     const closeIngredientModal = () => setIngredientInModal(null)
 
     const onTabClick = (tab) => {
-        setCurrentTab(tab);
+        setCurrentTab(tab);                                /* Как я понял эта функциональность пока избыточна */
         const elem = document.getElementById(currentTab);  /* ???????? */
         if (elem) elem.scrollIntoView({ behavior: "smooth" });
     }
