@@ -4,10 +4,14 @@ import PropTypes from 'prop-types';
 import {ingredientsPropsType} from '../../utils/prop-type';
 import style from '../ingredients-item/ingredients-item.module.css';
 
-const Ingredient = ({ingredientData, count, onClick}) => {
+const Ingredient = ({ ingredientData, count, onClick }) => {
     const {image, price, name} = ingredientData;
+
+    const HandleClick = () => {
+        onClick(ingredientData)
+    }
     return (
-        <article className={style.ingredient} onClick={onClick}>
+        <article className={`mb-8 ${style.ingredient}`} onClick={HandleClick}>
             {count && <Counter count={count} size="default"/>}
             <img src={image} alt='Ингредиент' className={style.img}/>
             <div className={`mt-1 mb-1 ${style.cost}`}>
