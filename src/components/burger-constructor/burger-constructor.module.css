@@ -1,0 +1,39 @@
+.constructor {
+    width: 600px;
+    box-sizing: border-box;
+}
+
+.constructor_list {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.buns {
+    margin-left: 32px;
+}
+
+.in_burger {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 440px;
+    overflow-y: scroll;
+}
+
+.in_burger_elem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ready {
+    display: flex;
+    justify-content: end;
+}
+
+.total_price {
+    display: flex;
+    align-items: center;
+}
