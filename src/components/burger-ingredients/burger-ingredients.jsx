@@ -1,20 +1,16 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientCategory from '../ingredients-list/ingredients-list';
-import IngredientDetails from "../ingredient-details/ingredient-details";
 import PropTypes from 'prop-types';
 import {ingredientsPropsType} from '../../utils/prop-type'
 import style from '../burger-ingredients/burger-ingredients.module.css';
-import Modal from "../modal/modal";
 
-const BurgerIngredients = ({ingredients}) => {
-    const [currentTab, setCurrentTab] = React.useState('buns')
-    const [ingredientInModal, setIngredientInModal] = useState(null)
-    const closeIngredientModal = () => setIngredientInModal(null)
+const BurgerIngredients = ({ingredients, setIngredientInModal}) => {
+    const [currentTab, setCurrentTab] = useState('buns')
 
     const onTabClick = (tab) => {
-        setCurrentTab(tab);                                /* Как я понял эта функциональность пока избыточна */
-        const elem = document.getElementById(currentTab);  /* ???????? */
+        setCurrentTab(tab);                                
+        const elem = document.getElementById(currentTab);  
         if (elem) elem.scrollIntoView({ behavior: "smooth" });
     }
 
@@ -24,7 +20,6 @@ const BurgerIngredients = ({ingredients}) => {
     
 
     return (
-        <>
         <section className="mr-10">
             <ul className={style.tabs}>
                 <Tab value="buns" active={currentTab === 'buns'} onClick={onTabClick}>
@@ -43,17 +38,12 @@ const BurgerIngredients = ({ingredients}) => {
                 <IngredientCategory title='Начинка' id='main' categoryData={main} onIngredientClick={setIngredientInModal}/>
             </ul>
         </section>
-        {ingredientInModal && (
-            <Modal title='Детали ингредиента' closeModal={closeIngredientModal}>
-               <IngredientDetails ingredientData={ingredientInModal}/>
-            </Modal>
-        )}
-        </>
     )
 }
 
 BurgerIngredients.propTypes = {
     ingredients: PropTypes.arrayOf(ingredientsPropsType.isRequired).isRequired,
+    setIngredientInModal: PropTypes.func.isRequired
 };
 
 export default BurgerIngredients

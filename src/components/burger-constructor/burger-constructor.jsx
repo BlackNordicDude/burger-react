@@ -1,15 +1,11 @@
-import React, { useState } from "react";  
+import React from "react";  
 import PropTypes from 'prop-types';
 import {ingredientsPropsType} from '../../utils/prop-type';
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import style from '../burger-constructor/burger-constructor.module.css';
-import Modal from "../modal/modal";
-import OrderDetails from "../order-details/order-details";
 
-const BurgerConstructor = ({ingredientsInBurger}) => {
-    const [order, setOrder] = useState(null)
-    const closeOrderModar = () => setOrder(null)
+const BurgerConstructor = ({ingredientsInBurger, setOrder}) => {
     const img = ingredientsInBurger[0].image_mobile;
     return ( 
         <section className={style.constructor}>
@@ -57,17 +53,13 @@ const BurgerConstructor = ({ingredientsInBurger}) => {
                 </div>
                 <Button onClick={setOrder}>Оформите заказ</Button>
             </div>
-            {order && (
-                <Modal closeModal={closeOrderModar}>
-                    <OrderDetails/>
-                </Modal>
-            )}
         </section>
     )
 }
 
 BurgerConstructor.propTypes = {
     ingredientsInBurger: PropTypes.arrayOf(ingredientsPropsType.isRequired).isRequired,
+    setOrder: PropTypes.func.isRequired
 }
 
 export default React.memo(BurgerConstructor);
