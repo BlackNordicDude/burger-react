@@ -10,10 +10,15 @@ export const reducer = (state, action) => {
             ...state,
             loading: false
         }
-        case 'error': 
+        case 'errorLoadIngr': 
         return {
             ...state,
-            error: true
+            errorLoadIngr: true
+        }
+        case 'errorGetOrder':
+        return {
+            ...state,
+            errorGetOrder: true
         }
         case 'setOrder': 
         return {

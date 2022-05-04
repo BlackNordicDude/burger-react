@@ -17,7 +17,8 @@ import { getIngredientsData } from '../../utils/burger-api';
 const initState = {
   ingredients: [],
   loading: true,
-  error: false,
+  errorLoadIngr: false,
+  errorGetOrder: false,
   order: null,
   selectedIngredient: null,
   constructorIngredient: {
@@ -34,7 +35,7 @@ function App() {
   useEffect(() => {
     getIngredientsData()
       .then(setIngredients)
-      .catch(() => dispatcher({type: 'error'}))
+      .catch(() => dispatcher({type: 'errorLoadIngr'}))
       .finally(() => dispatcher({type: 'endLoad'}))
   },[])
 
@@ -48,7 +49,7 @@ function App() {
       <AppHeader/>
       {
         state.loading ? (<h1 className='text text_type_main-large'>Loading data...</h1>) :
-        state.error ? (<h1 className='text text_type_main-large'>Loading error</h1>) :
+        state.errorLoadIngr ? (<h1 className='text text_type_main-large'>Loading error</h1>) :
         (<main className={style.main}>
         <p className={`text text_type_main-large mb-5`}>Соберите бургер</p>
         <div className={style.sections}>

@@ -17,6 +17,10 @@ const BurgerConstructor = () => {
 
         getOrderNum(arrOfIngredients)
         .then(order => dispatcher({type: 'setOrder', payload: order})) 
+        .catch(() => {
+            dispatcher({type: 'errorGetOrder'});
+            dispatcher({type: 'setOrder', payload: 'error'})
+        })
     }
 
     const buns = state.constructorIngredient.bun;
