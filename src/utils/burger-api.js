@@ -12,3 +12,27 @@ export const getIngredientsData = () => {
         return Promise.reject(data)
     });
 };
+
+export const getOrderNum = (order) => {
+    return fetch(`${BURGER_API_URL}/orders`, {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body:  JSON.stringify({ingredients: order})
+    })
+    .then(checkRes)
+    .then(data => {
+        if (data.success) return data.order.number;
+        return Promise.reject(data)
+    });
+}
+/* return fetch(`${BURGER_API_URL}/orders`, {'ingredients' : order})
+        .then(checkRes)
+        .then(data => {
+            if (data.success) return data.order;
+            return Promise.reject(data)
+        }); */
