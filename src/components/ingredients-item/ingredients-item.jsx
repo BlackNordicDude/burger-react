@@ -1,18 +1,19 @@
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
-import PropTypes from 'prop-types';
+import React, { useContext } from "react";
 import {ingredientsPropsType} from '../../utils/prop-type';
 import style from '../ingredients-item/ingredients-item.module.css';
+import { BurgerContext } from "../../contexts/burger-context";
 
-const Ingredient = ({ ingredientData, count, onClick }) => {
-    const {image, price, name} = ingredientData;
+const Ingredient = ({ ingredientData }) => {
+    const {dispatcher} = useContext(BurgerContext);
+    const {image, price, name, __v} = ingredientData;
 
     const HandleClick = () => {
-        onClick(ingredientData)
+        dispatcher({type: 'selectIngredient', payload: ingredientData})
     }
     return (
         <article className={`mb-8 ${style.ingredient}`} onClick={HandleClick}>
-            {count && <Counter count={count} size="default"/>}
+            {__v !== 0 && <Counter count={__v} size="default"/>}
             <img src={image} alt='Ингредиент' className={style.img}/>
             <div className={`mt-1 mb-1 ${style.cost}`}>
                 <p className="text text_type_digits-default">{price}</p>
@@ -25,8 +26,6 @@ const Ingredient = ({ ingredientData, count, onClick }) => {
 
 Ingredient.propTypes = {
     ingredientData: ingredientsPropsType.isRequired,
-    count: PropTypes.number,
-    onСlick: PropTypes.func
 };
 
 export default React.memo(Ingredient);
