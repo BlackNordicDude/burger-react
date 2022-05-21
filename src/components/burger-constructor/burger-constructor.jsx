@@ -1,25 +1,26 @@
-import React, { useContext } from "react";  
+import React from "react";  
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { BurgerContext } from "../../contexts/burger-context";
 import { getOrderNum } from "../../utils/burger-api";
-
+import { useDispatch, useSelector } from "react-redux";
 import style from '../burger-constructor/burger-constructor.module.css';
 
 const BurgerConstructor = () => {
-
-    const {state, dispatcher} = useContext(BurgerContext);
+    const state = useSelector(store => store)
+    const dispatch = useDispatch();
     const setOrder = () => {
 
         const arrOfIngredients = [];
         arrOfIngredients.push(state.constructorIngredient.bun[0]._id);
-        state.constructorIngredient.inner.map(el => arrOfIngredients.push(el._id));
-        console.log(arrOfIngredients);
+        state.constructorIngredient.inner.map(el => {
+            arrOfIngredients.push(el._id)
+            // диспатч для добавления ингредиента в набор для запроса номера заказа
+        });
 
         getOrderNum(arrOfIngredients)
-        .then(order => dispatcher({type: 'setOrder', payload: order})) 
+        .then(order => dispatch({type: 'setOrder', payload: order})) 
         .catch(() => {
-            dispatcher({type: 'errorGetOrder'});
-            dispatcher({type: 'setOrder', payload: 'error'})
+            dispatch({type: 'errorGetOrder'});
+            dispatch({type: 'setOrder', payload: 'error'})
         })
     }
 

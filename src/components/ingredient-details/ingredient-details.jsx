@@ -1,20 +1,20 @@
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDispatch, useSelector } from 'react-redux';
 import style from '../ingredient-details/ingredient-details.module.css'
-import { BurgerContext } from '../../contexts/burger-context';
-import { useContext } from 'react';
+import { ADD_BUN, ADD_INNER, CALC_COST } from '../../services/actions';
 
 const IngredientDetails = () => {
-
-    const { state, dispatcher } = useContext(BurgerContext);
-    const {image_large, name, calories, fat, proteins, carbohydrates} = state.selectedIngredient;
+    const { selectedIngredient } = useSelector(store => ({selectedIngredient: store.selectedIngredient}))
+    const dispatch = useDispatch();
+    const {image_large, name, calories, fat, proteins, carbohydrates} = selectedIngredient;
     const addInConstructor = () => {
-        state.selectedIngredient.__v += 1;
-        if (state.selectedIngredient.type === 'bun') {
-            dispatcher({type: 'addBun', payload: state.selectedIngredient})
-            dispatcher({type: 'calcCost', payload: state.selectedIngredient.price * 2})
+        selectedIngredient.__v += 1;
+        if (selectedIngredient.type === 'bun') {
+            dispatch({type: ADD_BUN, payload: selectedIngredient})
+            dispatch({type: CALC_COST, payload: selectedIngredient.price * 2})
         } else {
-            dispatcher({type: 'addInner', payload: state.selectedIngredient})
-            dispatcher({type: 'calcCost', payload: state.selectedIngredient.price})
+            dispatch({type: ADD_INNER, payload: selectedIngredient})
+            dispatch({type: CALC_COST, payload: selectedIngredient.price})
         } 
     }
     return (

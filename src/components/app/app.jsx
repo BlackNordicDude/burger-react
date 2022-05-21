@@ -1,5 +1,3 @@
-import { useEffect, useReducer, useState } from 'react';
-
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
@@ -7,49 +5,33 @@ import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 
-import { BurgerContext } from '../../contexts/burger-context';
-import { reducer } from '../../utils/reducer';
+import { useSelector, useDispatch } from 'react-redux';
 
 import style from './app.module.css';
 
-import { getIngredientsData } from '../../utils/burger-api';  
+import { useEffect } from 'react';
+import { getIngredientsData } from '../../utils/burger-api';
 
-const initState = {
-  ingredients: [],
-  loading: true,
-  errorLoadIngr: false,
-  errorGetOrder: false,
-  order: null,
-  selectedIngredient: null,
-  constructorIngredient: {
-    bun: [],
-    inner: []
-  },
-  totalCost: 0
-}
+
 
 function App() {
-  const [ingredients, setIngredients] = useState([]);
-  const [state, dispatcher] = useReducer(reducer, initState);
-
-  useEffect(() => {
-    getIngredientsData()
-      .then(setIngredients)
-      .catch(() => dispatcher({type: 'errorLoadIngr'}))
-      .finally(() => dispatcher({type: 'endLoad'}))
-  },[])
-
-  useEffect(() => {
-    dispatcher({type: 'setIngredients', payload: ingredients})
-  },[ingredients])
+  const { ingredientsError, ingredientsRequest, order, isModalOpen, selectedIngredient } = useSelector(store => ({
+    ingredientsError: store.ingredientsError,
+    ingredientsRequest: store.ingredientsRequest,
+    order: store.order,
+    isModalOpen: store.isModalOpen,
+    selectedIngredient: store.selectedIngredient
+  }))
+  const dispatch = useDispatch();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => dispatch(getIngredientsData()),[])
 
   return (
     <div className={style.app}>
-    <BurgerContext.Provider value={{state, dispatcher}}>
       <AppHeader/>
       {
-        state.loading ? (<h1 className='text text_type_main-large'>Loading data...</h1>) :
-        state.errorLoadIngr ? (<h1 className='text text_type_main-large'>Loading error</h1>) :
+        ingredientsRequest ? (<h1 className='text text_type_main-large'>Loading data...</h1>) :
+        ingredientsError ? (<h1 className='text text_type_main-large'>Loading error</h1>) :
         (<main className={style.main}>
         <p className={`text text_type_main-large mb-5`}>Соберите бургер</p>
         <div className={style.sections}>
@@ -58,17 +40,16 @@ function App() {
         </div>
       </main>)
       }
-      {state.order && (
+      {order && isModalOpen && (
                 <Modal>
                     <OrderDetails/> 
                 </Modal>
             )}
-      {state.selectedIngredient && (
+      {selectedIngredient && isModalOpen && (
             <Modal title='Детали ингредиента'>
-               <IngredientDetails ingredientData={state.selectedIngredient}/>
+               <IngredientDetails ingredientData={selectedIngredient}/>
             </Modal>
         )}
-    </BurgerContext.Provider>
     </div>
   );
 }

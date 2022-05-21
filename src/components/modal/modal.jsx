@@ -1,5 +1,5 @@
 import ReactDOM  from "react-dom"
-import React, { useCallback, useContext } from "react"
+import React, { useCallback } from "react"
 import PropTypes from 'prop-types';
 
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components"
@@ -7,20 +7,29 @@ import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components"
 import ModalOverlay from "../modal-overlay/modal-overlay"
 
 import style from '../modal/modal.module.css'
-import { BurgerContext } from "../../contexts/burger-context";
+import { useDispatch, useSelector } from "react-redux";
+import { CLOSE_MODAL, REMOVE_MODAL_INGREDIENT, RESET_ORDER } from "../../services/actions";
 
 const modalRoot = document.getElementById('modal');
 
 const Modal = ({title, children}) => {
 
-    const {state, dispatcher} = useContext(BurgerContext);
+    const dispatch = useDispatch();
+
+    const {order, selectedIngredient} = useSelector(store => ({
+        order: store.order,
+        selectedIngredient: store.selectedIngredient
+    }))
+
     const closeModal = useCallback(() => {
-        if (state.selectedIngredient !== null) {
-            dispatcher({type: 'closeIngrModal'})
-        } else if (state.order !== null) {
-            dispatcher({type: 'closeOrderModal'})
+        if (selectedIngredient !== null) {
+            dispatch({type: CLOSE_MODAL})
+            dispatch({type: REMOVE_MODAL_INGREDIENT})
+        } else if (order !== null) {
+            dispatch({type: CLOSE_MODAL})
+            dispatch({type: RESET_ORDER})
         } else throw new Error('error with close modal')
-    },[dispatcher, state.order, state.selectedIngredient])
+    },[dispatch, order, selectedIngredient])
     
 
     React.useEffect(() => {

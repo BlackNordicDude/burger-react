@@ -1,15 +1,16 @@
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useContext } from "react";
+import React from "react";
+import { useDispatch } from "react-redux";
 import {ingredientsPropsType} from '../../utils/prop-type';
 import style from '../ingredients-item/ingredients-item.module.css';
-import { BurgerContext } from "../../contexts/burger-context";
+import { ADD_MODAL_INGREDIENT, OPEN_MODAL } from "../../services/actions";
 
 const Ingredient = ({ ingredientData }) => {
-    const {dispatcher} = useContext(BurgerContext);
     const {image, price, name, __v} = ingredientData;
-
+    const dispatch = useDispatch();
     const HandleClick = () => {
-        dispatcher({type: 'selectIngredient', payload: ingredientData})
+        dispatch({type: ADD_MODAL_INGREDIENT, selectedIngredient: ingredientData})
+        dispatch({type: OPEN_MODAL})
     }
     return (
         <article className={`mb-8 ${style.ingredient}`} onClick={HandleClick}>

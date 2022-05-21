@@ -1,24 +1,27 @@
-import { useContext, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientCategory from '../ingredients-list/ingredients-list';
 import style from '../burger-ingredients/burger-ingredients.module.css';
-import { BurgerContext } from "../../contexts/burger-context";
+import { useDispatch, useSelector } from "react-redux";
+import { CHANGE_TAB } from '../../services/actions/index'
 
 const BurgerIngredients = () => {
 
-    const {state} = useContext(BurgerContext);
-
-    const [currentTab, setCurrentTab] = useState('buns')
+    const { ingredients, currentTab } = useSelector(store => ({
+        ingredients: store.ingredients,
+        currentTab: store.currentTab
+    }))
+    const dispatch = useDispatch();
 
     const onTabClick = (tab) => {
-        setCurrentTab(tab);                                
+        dispatch({type: CHANGE_TAB, tab: tab})                           
         const elem = document.getElementById(currentTab);  
         if (elem) elem.scrollIntoView({ behavior: "smooth" });
     }
 
-    const buns = useMemo(() => state.ingredients.filter(el => el.type === 'bun'),[state.ingredients]) 
-    const sauces = useMemo(() => state.ingredients.filter(el => el.type === 'sauce'),[state.ingredients]) 
-    const main = useMemo(() => state.ingredients.filter(el => el.type === 'main'),[state.ingredients]) 
+    const buns = useMemo(() => ingredients.filter(el => el.type === 'bun'),[ingredients]) 
+    const sauces = useMemo(() => ingredients.filter(el => el.type === 'sauce'),[ingredients]) 
+    const main = useMemo(() => ingredients.filter(el => el.type === 'main'),[ingredients]) 
     
 
     return (
