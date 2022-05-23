@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import style from './app.module.css';
 
 import { useEffect } from 'react';
-import { getIngredientsData } from '../../utils/burger-api';
+import { getIngredientsData } from '../../services/actions/ingredients';
 
 
 

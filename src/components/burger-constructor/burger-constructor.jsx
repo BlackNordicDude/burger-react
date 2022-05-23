@@ -1,6 +1,6 @@
 import React from "react";  
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { getOrderNum } from "../../utils/burger-api";
+import { getOrderNum } from "../../services/actions/order";
 import { useDispatch, useSelector } from "react-redux";
 import style from '../burger-constructor/burger-constructor.module.css';
 
@@ -11,12 +11,9 @@ const BurgerConstructor = () => {
 
         const arrOfIngredients = [];
         arrOfIngredients.push(state.constructorIngredient.bun[0]._id);
-        state.constructorIngredient.inner.map(el => {
-            arrOfIngredients.push(el._id)
-            // диспатч для добавления ингредиента в набор для запроса номера заказа
-        });
+        state.constructorIngredient.inner.map(el => arrOfIngredients.push(el._id));
 
-        getOrderNum(arrOfIngredients)
+        dispatch(getOrderNum(arrOfIngredients))
         .then(order => dispatch({type: 'setOrder', payload: order})) 
         .catch(() => {
             dispatch({type: 'errorGetOrder'});
