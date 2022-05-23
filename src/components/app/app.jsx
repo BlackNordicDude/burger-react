@@ -9,9 +9,8 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import style from './app.module.css';
 
-import { useEffect } from 'react';
 import { getIngredientsData } from '../../services/actions/ingredients';
-
+import { useEffect } from 'react';
 
 
 function App() {
@@ -23,8 +22,8 @@ function App() {
     selectedIngredient: store.selectedIngredient
   }))
   const dispatch = useDispatch();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => dispatch(getIngredientsData()),[])
+  
+  useEffect(() => dispatch(getIngredientsData()));
 
   return (
     <div className={style.app}>

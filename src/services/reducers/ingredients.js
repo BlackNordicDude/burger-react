@@ -7,7 +7,7 @@ import {
 const initialState = {
     ingredients: [],
     ingredientsError: false,
-    ingredientsRequest: true
+    ingredientsRequest: false
 }
 
 export const ingredientsReducer = (state = initialState, action) => {

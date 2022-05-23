@@ -5,38 +5,37 @@ import { useDispatch, useSelector } from "react-redux";
 import style from '../burger-constructor/burger-constructor.module.css';
 
 const BurgerConstructor = () => {
-    const state = useSelector(store => store)
+    
+    const { bun, inner, totalCost } = useSelector(store => {
+        return ({
+            bun: store.constructor.constructorIngredient.bun,
+            inner: store.constructor.constructorIngredient.inner,
+            totalCost: store.constructor.totalCost
+        })
+    })
     const dispatch = useDispatch();
     const setOrder = () => {
 
         const arrOfIngredients = [];
-        arrOfIngredients.push(state.constructorIngredient.bun[0]._id);
-        state.constructorIngredient.inner.map(el => arrOfIngredients.push(el._id));
+        arrOfIngredients.push(bun._id);
+        inner.map(el => arrOfIngredients.push(el._id));
 
         dispatch(getOrderNum(arrOfIngredients))
-        .then(order => dispatch({type: 'setOrder', payload: order})) 
-        .catch(() => {
-            dispatch({type: 'errorGetOrder'});
-            dispatch({type: 'setOrder', payload: 'error'})
-        })
     }
-
-    const buns = state.constructorIngredient.bun;
-    const inner = state.constructorIngredient.inner;
 
     return ( 
         <section className={style.constructor}>
              <ul className={style.constructor_list}>
-             { state.constructorIngredient.bun.length !== 0 && <div className={style.buns}>
+             { bun && <div className={style.buns}>
                     <ConstructorElement
                         type="top"
                         isLocked={true}
-                        text={`${buns[0].name} (верх)`}
-                        price={buns[0].price}
-                        thumbnail={buns[0].image_mobile}
+                        text={`${bun.name} (верх)`}
+                        price={bun.price}
+                        thumbnail={bun.image_mobile}
                     />
                 </div> }
-                {state.constructorIngredient.inner.length !== 0 && <div className={`pr-1 ${style.in_burger}`}>
+                { inner.length !== 0 && <div className={`pr-1 ${style.in_burger}`}>
                     {inner.map((el, indx) => {  
                         return (
                             <div 
@@ -53,19 +52,19 @@ const BurgerConstructor = () => {
                             )
                         })}
                 </div>}
-                { state.constructorIngredient.bun.length !== 0 && <div className={style.buns}>
+                { bun && <div className={style.buns}>
                     <ConstructorElement
                         type="bottom"
                         isLocked={true}
-                        text={`${buns[0].name} (низ)`}
-                        price={buns[0].price}
-                        thumbnail={buns[0].image_mobile}
+                        text={`${bun.name} (низ)`}
+                        price={bun.price}
+                        thumbnail={bun.image_mobile}
                     />
                 </div> }
             </ul>
             <div className={`mt-10 ${style.ready}`}>
                 <div className={`mr-10 ${style.total_price}`}>
-                    <p className="text text_type_digits-medium">{state.totalCost}</p>  
+                    <p className="text text_type_digits-medium">{totalCost}</p>  
                     <CurrencyIcon type='primary'/>
                 </div>
                 <Button onClick={setOrder}>Оформите заказ</Button>  

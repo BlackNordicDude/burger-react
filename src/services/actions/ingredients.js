@@ -21,6 +21,8 @@ export function getIngredientsData() {
             } else {
                 dispatch({type: LOAD_INGREDIENTS_FAILED})
             }
-        }).catch(err => dispatch({type: LOAD_INGREDIENTS_FAILED}))
+        }).catch(err =>{
+            console.log(err, 'err')
+            dispatch({type: LOAD_INGREDIENTS_FAILED})})
     }
 }

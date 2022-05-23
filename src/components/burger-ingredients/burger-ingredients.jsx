@@ -7,10 +7,12 @@ import { CHANGE_TAB } from '../../services/actions/index'
 
 const BurgerIngredients = () => {
 
-    const { ingredients, currentTab } = useSelector(store => ({
-        ingredients: store.ingredients,
-        currentTab: store.currentTab
-    }))
+    const { ingredients, currentTab } = useSelector(store => {
+        return ({
+            ingredients: store.ingredients.ingredients,
+            currentTab: store.tab.currentTab
+        })
+    })
     const dispatch = useDispatch();
 
     const onTabClick = (tab) => {
@@ -19,9 +21,9 @@ const BurgerIngredients = () => {
         if (elem) elem.scrollIntoView({ behavior: "smooth" });
     }
 
-    const buns = useMemo(() => {if (ingredients) {ingredients.filter(el => el.type === 'bun')}},[ingredients]) 
-    const sauces = useMemo(() => {if (ingredients) {ingredients.filter(el => el.type === 'sauce')}},[ingredients]) 
-    const main = useMemo(() => {if (ingredients) {ingredients.filter(el => el.type === 'main')}},[ingredients]) 
+    const buns = useMemo(() => ingredients.filter(el => el.type === 'bun'),[ingredients]) 
+    const sauces = useMemo(() => ingredients.filter(el => el.type === 'sauce'),[ingredients]) 
+    const main = useMemo(() => ingredients.filter(el => el.type === 'main'),[ingredients]) 
     
 
     return (
