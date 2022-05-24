@@ -8,9 +8,9 @@ const BurgerConstructor = () => {
     
     const { bun, inner, totalCost } = useSelector(store => {
         return ({
-            bun: store.constructor.constructorIngredient.bun,
-            inner: store.constructor.constructorIngredient.inner,
-            totalCost: store.constructor.totalCost
+            bun: store.constructorState.constructorIngredient.bun,
+            inner: store.constructorState.constructorIngredient.inner,
+            totalCost: store.constructorState.totalCost
         })
     })
     const dispatch = useDispatch();

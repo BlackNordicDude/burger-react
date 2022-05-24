@@ -12,7 +12,7 @@ export function getIngredientsData() {
             type: LOAD_INGREDIENTS_REQUEST
         })
         fetch(`${BURGER_API_URL}/ingredients`)
-        .then(res => {
+        .then(res => res.json()).then(res => {
             if (res && res.success) {
                 dispatch({
                     type: LOAD_INGREDIENTS_SUCCESS,
@@ -22,7 +22,7 @@ export function getIngredientsData() {
                 dispatch({type: LOAD_INGREDIENTS_FAILED})
             }
         }).catch(err =>{
-            console.log(err, 'err')
+            console.log(err)
             dispatch({type: LOAD_INGREDIENTS_FAILED})})
     }
 }

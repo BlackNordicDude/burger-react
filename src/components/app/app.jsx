@@ -23,7 +23,7 @@ function App() {
   }))
   const dispatch = useDispatch();
   
-  useEffect(() => dispatch(getIngredientsData()));
+  useEffect(() => dispatch(getIngredientsData()),[dispatch]);
 
   return (
     <div className={style.app}>
@@ -44,7 +44,7 @@ function App() {
                     <OrderDetails/> 
                 </Modal>
             )}
-      {selectedIngredient && isModalOpen && (
+      {!!selectedIngredient && !!isModalOpen && (
             <Modal title='Детали ингредиента'>
                <IngredientDetails ingredientData={selectedIngredient}/>
             </Modal>
