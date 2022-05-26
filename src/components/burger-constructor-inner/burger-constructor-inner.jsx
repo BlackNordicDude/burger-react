@@ -1,5 +1,6 @@
 import { useDrag, useDrop } from "react-dnd";
 import { useRef } from "react";
+import PropTypes from 'prop-types';
 import style from '../burger-constructor/burger-constructor.module.css';
 
 export const InnerItem = ({ children, index, moveItem }) => {
@@ -47,4 +48,9 @@ export const InnerItem = ({ children, index, moveItem }) => {
         </div>
     )
 }
- 
+
+InnerItem.propTypes = {
+    children: PropTypes.node.isRequired,
+    index: PropTypes.number.isRequired,
+    moveItem: PropTypes.func.isRequired
+};
