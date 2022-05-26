@@ -1,22 +1,11 @@
-import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import style from '../ingredient-details/ingredient-details.module.css'
-import { ADD_BUN, ADD_INNER, CALC_COST } from '../../services/actions';
+
 
 const IngredientDetails = () => {
-    const { selectedIngredient } = useSelector(store => ({selectedIngredient: store.selectedIngredient}))
-    const dispatch = useDispatch();
+    const { selectedIngredient } = useSelector(store => ({selectedIngredient: store.modal.selectedIngredient}))
     const {image_large, name, calories, fat, proteins, carbohydrates} = selectedIngredient;
-    const addInConstructor = () => {
-        selectedIngredient.__v += 1;
-        if (selectedIngredient.type === 'bun') {
-            dispatch({type: ADD_BUN, payload: selectedIngredient})
-            dispatch({type: CALC_COST, payload: selectedIngredient.price * 2})
-        } else {
-            dispatch({type: ADD_INNER, payload: selectedIngredient})
-            dispatch({type: CALC_COST, payload: selectedIngredient.price})
-        } 
-    }
+
     return (
         <>
             <img src={image_large} alt="Ingredient" />
@@ -39,7 +28,6 @@ const IngredientDetails = () => {
                     <p className="text text_type_digits-default">{carbohydrates}</p>
                 </div>
             </div>
-            <Button onClick={addInConstructor}>+</Button>
         </>
     )
 }

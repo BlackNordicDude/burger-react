@@ -1,9 +1,8 @@
-import { ADD_MODAL_INGREDIENT, CLOSE_MODAL, OPEN_MODAL, REMOVE_MODAL_INGREDIENT, RESET_ORDER } from "../actions";
+import { ADD_MODAL_INGREDIENT, CLOSE_MODAL, OPEN_MODAL, REMOVE_MODAL_INGREDIENT } from "../actions";
 
 const initialState = {
     isModalOpen: false,
     selectedIngredient: {},
-    order: null
 }
 export const modalReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -29,12 +28,6 @@ export const modalReducer = (state = initialState, action) => {
             return {
                 ...state,
                 selectedIngredient: action.selectedIngredient
-            }
-        }
-        case RESET_ORDER: {
-            return {
-                ...state,
-                order: null
             }
         }
         default: return state

@@ -19,11 +19,11 @@ export function getOrderNum(order) {
             },
             body:  JSON.stringify({ingredients: order})
         })
-        .then( res => {
+        .then( res => res.json() ).then(res => {
             if (res && res.success) {
                 dispatch({
                     type: GET_ORDER_SUCCESS,
-                    order: res.data.number
+                    order: res.order.number
                 })
             } else {
                 dispatch({

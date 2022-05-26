@@ -5,8 +5,8 @@ import style from '../order-details/order-details.module.css'
 
 const OrderDetails = () => {
     const { order, orderError } = useSelector(store => ({
-        order: store.order,
-        orderError: store.orderError
+        order: store.order.order,
+        orderError: store.order.orderError
     }))
 
     return (

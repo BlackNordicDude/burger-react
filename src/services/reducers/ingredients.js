@@ -1,7 +1,9 @@
 import {
     LOAD_INGREDIENTS_REQUEST,
     LOAD_INGREDIENTS_FAILED,
-    LOAD_INGREDIENTS_SUCCESS
+    LOAD_INGREDIENTS_SUCCESS,
+    PLUS_V,
+    MINUS_V
 } from '../actions/index'
 
 const initialState = {
@@ -30,6 +32,40 @@ export const ingredientsReducer = (state = initialState, action) => {
                 ...state,
                 ingredientsRequest: false,
                 ingredients: action.ingredients
+            }
+        }
+        case PLUS_V: {
+            return {
+                ...state,
+                ingredients: 
+                    state.ingredients.map(el => {
+                        if (el._id !== action.id) {
+                            return el
+                        } else {
+                            const v = el.__v
+                            return {
+                                ...el,
+                                __v: v + 1
+                            }
+                        }
+                    })
+            }
+        }
+        case MINUS_V: {
+            return {
+                ...state,
+                ingredients: 
+                    state.ingredients.map(el => {
+                        if (el._id !== action.id) {
+                            return el
+                        } else {
+                            const v = el.__v
+                            return {
+                                ...el,
+                                __v: v - 1
+                            }
+                        }
+                    })
             }
         }
         default: return state

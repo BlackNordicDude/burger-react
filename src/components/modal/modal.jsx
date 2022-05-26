@@ -1,5 +1,5 @@
 import ReactDOM  from "react-dom"
-import React, { useCallback } from "react"
+import { useEffect, useCallback } from "react"
 import PropTypes from 'prop-types';
 
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components"
@@ -17,8 +17,8 @@ const Modal = ({title, children}) => {
     const dispatch = useDispatch();
 
     const {order, selectedIngredient} = useSelector(store => ({
-        order: store.order,
-        selectedIngredient: store.selectedIngredient
+        order: store.order.order,
+        selectedIngredient: store.modal.selectedIngredient
     }))
 
     const closeModal = useCallback(() => {
@@ -32,7 +32,7 @@ const Modal = ({title, children}) => {
     },[dispatch, order, selectedIngredient])
     
 
-    React.useEffect(() => {
+    useEffect(() => {
         const handleEsc = (e) => {
             e.key === 'Escape' && closeModal();
         };

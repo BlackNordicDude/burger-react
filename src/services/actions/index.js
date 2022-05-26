@@ -1,6 +1,8 @@
 export const LOAD_INGREDIENTS_REQUEST = 'LOAD_INGREDIENTS_REQUEST';
 export const LOAD_INGREDIENTS_FAILED = 'LOAD_INGREDIENTS_FAILED';
 export const LOAD_INGREDIENTS_SUCCESS = 'LOAD_INGREDIENTS_SUCCESS';
+export const PLUS_V = 'PLUS_V';
+export const MINUS_V = 'MINUS_V';
 
 export const GET_ORDER_REQUEST = 'GET_ORDER_REQUEST';
 export const GET_ORDER_FAILED = 'GET_ORDER_FAILED';
@@ -8,7 +10,9 @@ export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS';
 
 export const ADD_BUN = 'ADD_BUN';
 export const ADD_INNER = 'ADD_INNER';
-export const CALC_COST = 'CALC_COST';
+export const PLUS_COST = 'PLUS_COST';
+export const MINUS_COST = 'MINUS_COST';
+export const RESET_BUN_COST = 'RESET_BUN_COST';
 export const REMOVE_BUN = 'REMOVE_BUN';
 export const REMOVE_INNER = 'REMOVE_INNER';
 export const SORT_INGREDIENTS = 'SOR_INGREDIENTS'; 
