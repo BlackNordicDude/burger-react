@@ -19,7 +19,8 @@ export function getOrderNum(order) {
             },
             body:  JSON.stringify({ingredients: order})
         })
-        .then( res => res.json() ).then(res => {
+        .then(res => res.ok ? res.json() : res.json().then((err) => Promise.reject(err)))
+        .then(res => {
             if (res && res.success) {
                 dispatch({
                     type: GET_ORDER_SUCCESS,

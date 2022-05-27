@@ -2,7 +2,7 @@ import { ADD_MODAL_INGREDIENT, CLOSE_MODAL, OPEN_MODAL, REMOVE_MODAL_INGREDIENT 
 
 const initialState = {
     isModalOpen: false,
-    selectedIngredient: {},
+    selectedIngredient: null,
 }
 export const modalReducer = (state = initialState, action) => {
     switch (action.type) {
