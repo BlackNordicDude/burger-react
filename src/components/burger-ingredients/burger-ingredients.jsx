@@ -4,6 +4,7 @@ import IngredientCategory from '../ingredients-list/ingredients-list';
 import style from '../burger-ingredients/burger-ingredients.module.css';
 import { useDispatch, useSelector } from "react-redux";
 import { CHANGE_TAB } from '../../services/actions/index'
+import { Link, Element } from 'react-scroll';
 
 const BurgerIngredients = () => {
 
@@ -24,7 +25,7 @@ const BurgerIngredients = () => {
     const sauces = useMemo(() => ingredients.filter(el => el.type === 'sauce'),[ingredients]) 
     const main = useMemo(() => ingredients.filter(el => el.type === 'main'),[ingredients]) 
     
-    const onTabClick = (tab) => {
+    const setCurrentTab = (tab) => {
         dispatch({type: CHANGE_TAB, tab: tab}) 
     }
 
@@ -39,37 +40,45 @@ const BurgerIngredients = () => {
         const saucesDif = Math.abs(scrollBlockPos - sauceHeaderPos);
         const mainsDif = Math.abs(scrollBlockPos - mainHeaderPos);
 
-        console.log(scrollBlockPos, 'scrollBlock');
-        console.log(bunHeaderPos, 'bunHeader');
-        console.log(sauceHeaderPos, 'sauceHeaderPos');
-        console.log(mainHeaderPos, 'mainHeaderPos');
-
         if (bunsDif < saucesDif) {
-            onTabClick("buns") 
+            setCurrentTab("buns") 
         } else if (saucesDif < mainsDif) {
-            onTabClick("sauces")
+            setCurrentTab("sauces")
         } else {
-            onTabClick("main")
+            setCurrentTab("main")
         }
     }
 
     return (
         <section className="mr-10">
             <ul className={style.tabs}>
-                <Tab value="buns" active={currentTab === 'buns'} onClick={onTabClick}>
-                    Булки
+                <Tab value="buns" active={currentTab === 'buns'} onClick={setCurrentTab}>
+                    <Link to="buns" spy={true} smooth={true} duration={250} containerId='categores'>
+                        Булки  
+                    </Link>  
                 </Tab>
-                <Tab value="sauces" active={currentTab === 'sauces'} onClick={onTabClick}>
-                    Соусы
+                <Tab value="sauces" active={currentTab === 'sauces'} onClick={setCurrentTab}>
+                    <Link to="sauces" spy={true} smooth={true} duration={250} containerId='categores'>
+                        Соусы  
+                    </Link>
+                           
                 </Tab>
-                <Tab value="main" active={currentTab === 'main'} onClick={onTabClick}>
-                    Начинка
+                <Tab value="main" active={currentTab === 'main'} onClick={setCurrentTab}>
+                    <Link to="main" spy={true} smooth={true} duration={250} containerId='categores'>
+                        Начинка  
+                    </Link>        
                 </Tab>
             </ul>
-            <ul className={style.ingredients} ref={scrollRef} onScroll={handleScroll}>
-                <IngredientCategory title='Булки' id='buns' categoryData={buns} refer={bunRef}/>
-                <IngredientCategory title='Соусы' id='sauces' categoryData={sauces} refer={sauceRef}/>
-                <IngredientCategory title='Начинка' id='main' categoryData={main} refer={mainRef}/>
+            <ul className={style.ingredients} id='categores' ref={scrollRef} onScroll={handleScroll}>
+                <Element name='buns'>
+                    <IngredientCategory title='Булки' id='buns' categoryData={buns} refer={bunRef}/>
+                </Element>
+                <Element name='sauces'>
+                    <IngredientCategory title='Соусы' id='sauces' categoryData={sauces} refer={sauceRef}/>
+                </Element>
+                <Element name='main'>
+                    <IngredientCategory title='Начинка' id='main' categoryData={main} refer={mainRef}/>
+                </Element>
             </ul>
         </section>
     )
