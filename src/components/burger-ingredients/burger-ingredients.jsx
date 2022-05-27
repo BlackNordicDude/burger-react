@@ -52,22 +52,21 @@ const BurgerIngredients = () => {
     return (
         <section className="mr-10">
             <ul className={style.tabs}>
-                <Tab value="buns" active={currentTab === 'buns'} onClick={setCurrentTab}>
-                    <Link to="buns" spy={true} smooth={true} duration={250} containerId='categores'>
+                <Link to="buns" spy={true} smooth={true} duration={250} containerId='categores'>
+                    <Tab value="buns" active={currentTab === 'buns'} onClick={setCurrentTab}>
                         Булки  
-                    </Link>  
-                </Tab>
-                <Tab value="sauces" active={currentTab === 'sauces'} onClick={setCurrentTab}>
-                    <Link to="sauces" spy={true} smooth={true} duration={250} containerId='categores'>
+                    </Tab>
+                </Link>  
+                <Link to="sauces" spy={true} smooth={true} duration={250} containerId='categores'>
+                    <Tab value="sauces" active={currentTab === 'sauces'} onClick={setCurrentTab}>
                         Соусы  
-                    </Link>
-                           
-                </Tab>
-                <Tab value="main" active={currentTab === 'main'} onClick={setCurrentTab}>
-                    <Link to="main" spy={true} smooth={true} duration={250} containerId='categores'>
+                    </Tab>
+                </Link>
+                <Link to="main" spy={true} smooth={true} duration={250} containerId='categores'>
+                    <Tab value="main" active={currentTab === 'main'} onClick={setCurrentTab}>
                         Начинка  
-                    </Link>        
-                </Tab>
+                    </Tab>
+                </Link>        
             </ul>
             <ul className={style.ingredients} id='categores' ref={scrollRef} onScroll={handleScroll}>
                 <Element name='buns'>
