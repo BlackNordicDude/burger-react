@@ -1,73 +1,126 @@
-import React, { useContext } from "react";  
+import React from "react";  
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { BurgerContext } from "../../contexts/burger-context";
-import { getOrderNum } from "../../utils/burger-api";
-
+import { getOrderNum } from "../../services/actions/order";
+import { useDispatch, useSelector } from "react-redux";
 import style from '../burger-constructor/burger-constructor.module.css';
+import { ADD_BUN, ADD_INNER, OPEN_MODAL, REMOVE_INNER, PLUS_COST, MINUS_COST, RESET_BUN_COST, SORT_INGREDIENTS, PLUS_V, MINUS_V } from "../../services/actions";
+import { useDrop } from "react-dnd";
+import { v4 as uuidv4 } from 'uuid';
+import { InnerItem } from '../burger-constructor-inner/burger-constructor-inner';
 
 const BurgerConstructor = () => {
+    
+    const { bun, inner, totalCost } = useSelector(store => {
+        return ({
+            bun: store.constructorState.constructorIngredient.bun,
+            inner: store.constructorState.constructorIngredient.inner,
+            totalCost: store.constructorState.totalCost,
+        })
+    })
+    const dispatch = useDispatch();
 
-    const {state, dispatcher} = useContext(BurgerContext);
+    const removeIngredient = (item) => {
+        dispatch({type: MINUS_V, id: item._id})
+        dispatch({type: REMOVE_INNER, payload: item})
+        dispatch({type: MINUS_COST, payload: item.price})
+    }
+
     const setOrder = () => {
 
         const arrOfIngredients = [];
-        arrOfIngredients.push(state.constructorIngredient.bun[0]._id);
-        state.constructorIngredient.inner.map(el => arrOfIngredients.push(el._id));
-        console.log(arrOfIngredients);
+        arrOfIngredients.push(bun._id);
+        inner.map(el => arrOfIngredients.push(el._id));
 
-        getOrderNum(arrOfIngredients)
-        .then(order => dispatcher({type: 'setOrder', payload: order})) 
-        .catch(() => {
-            dispatcher({type: 'errorGetOrder'});
-            dispatcher({type: 'setOrder', payload: 'error'})
-        })
+        dispatch(getOrderNum(arrOfIngredients))
+        dispatch({type: OPEN_MODAL})
     }
 
-    const buns = state.constructorIngredient.bun;
-    const inner = state.constructorIngredient.inner;
+    const onDropHandler = (item) => {
+        dispatch({type: PLUS_V, id: item._id})
+        const cloneItem = {...item};
+        cloneItem.uid = uuidv4();
+        if (item.type === 'bun') {
+            if (!bun) {
+                dispatch({type: ADD_BUN, payload: cloneItem})
+                dispatch({type: PLUS_COST, payload: cloneItem.price * 2})
+            } else {
+                dispatch({type: RESET_BUN_COST})
+                dispatch({type: MINUS_V, id: bun._id})
+                dispatch({type: ADD_BUN, payload: cloneItem})
+                dispatch({type: PLUS_COST, payload: cloneItem.price * 2})
+            }
+        } else {
+            dispatch({type: ADD_INNER, payload: cloneItem})
+            dispatch({type: PLUS_COST, payload: cloneItem.price})
+        } 
+    }
 
+    const [, dropConRef] = useDrop({
+        accept: 'ingredient',
+        drop(item) {
+            onDropHandler(item)
+        }
+    })
+
+    const moveItem = (dragIndex, hoverIndex) => {
+        const dragIng = inner[dragIndex];
+        const newArr = [...inner];
+        newArr.splice(dragIndex, 1);
+        newArr.splice(hoverIndex, 0, dragIng);
+
+        dispatch({type: SORT_INGREDIENTS, payload: newArr})
+    }
+
+    const renderInner = (el, indx) => {
+        return (
+            <InnerItem
+                className={style.in_burger_elem}
+                key={el.uid}
+                index={indx}
+                moveItem={moveItem}
+                >
+                <DragIcon type="primary"/>
+                <ConstructorElement
+                    text={el.name}
+                    price={el.price}
+                    thumbnail={el.image_mobile}
+                    handleClose={() => removeIngredient(el)}
+                />
+            </InnerItem>
+        )
+    }
     return ( 
         <section className={style.constructor}>
-             <ul className={style.constructor_list}>
-             { state.constructorIngredient.bun.length !== 0 && <div className={style.buns}>
+             <ul 
+                className={style.constructor_list}
+                ref={dropConRef}
+                >
+             { !!bun && <div className={style.buns}>
                     <ConstructorElement
                         type="top"
                         isLocked={true}
-                        text={`${buns[0].name} (верх)`}
-                        price={buns[0].price}
-                        thumbnail={buns[0].image_mobile}
+                        text={`${bun.name} (верх)`}
+                        price={bun.price}
+                        thumbnail={bun.image_mobile}
                     />
                 </div> }
-                {state.constructorIngredient.inner.length !== 0 && <div className={`pr-1 ${style.in_burger}`}>
-                    {inner.map((el, indx) => {  
-                        return (
-                            <div 
-                                className={style.in_burger_elem}
-                                key={`${el._id}_${indx}`}
-                                >
-                                <DragIcon type="primary"/>
-                                <ConstructorElement
-                                    text={el.name}
-                                    price={el.price}
-                                    thumbnail={el.image_mobile}
-                                />
-                            </div>
-                            )
-                        })}
+                { inner.length !== 0 && 
+                <div className={`pr-1 ${style.in_burger}`}>
+                    {inner.map((el, indx) => renderInner(el, indx))}
                 </div>}
-                { state.constructorIngredient.bun.length !== 0 && <div className={style.buns}>
+                { !!bun && <div className={style.buns}>
                     <ConstructorElement
                         type="bottom"
                         isLocked={true}
-                        text={`${buns[0].name} (низ)`}
-                        price={buns[0].price}
-                        thumbnail={buns[0].image_mobile}
+                        text={`${bun.name} (низ)`}
+                        price={bun.price}
+                        thumbnail={bun.image_mobile}
                     />
                 </div> }
             </ul>
             <div className={`mt-10 ${style.ready}`}>
                 <div className={`mr-10 ${style.total_price}`}>
-                    <p className="text text_type_digits-medium">{state.totalCost}</p>  
+                    <p className="text text_type_digits-medium">{totalCost}</p>  
                     <CurrencyIcon type='primary'/>
                 </div>
                 <Button onClick={setOrder}>Оформите заказ</Button>  

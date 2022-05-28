@@ -1,19 +1,29 @@
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useContext } from "react";
+import React from "react";
+import { useDispatch } from "react-redux";
 import {ingredientsPropsType} from '../../utils/prop-type';
 import style from '../ingredients-item/ingredients-item.module.css';
-import { BurgerContext } from "../../contexts/burger-context";
+import { ADD_MODAL_INGREDIENT, OPEN_MODAL } from "../../services/actions";
+import { useDrag } from "react-dnd";
 
 const Ingredient = ({ ingredientData }) => {
-    const {dispatcher} = useContext(BurgerContext);
     const {image, price, name, __v} = ingredientData;
-
+    const dispatch = useDispatch();
     const HandleClick = () => {
-        dispatcher({type: 'selectIngredient', payload: ingredientData})
+        dispatch({type: ADD_MODAL_INGREDIENT, selectedIngredient: ingredientData})
+        dispatch({type: OPEN_MODAL})
     }
+    const [, dragRef] = useDrag({
+        type: 'ingredient',
+        item: {...ingredientData}
+    })
     return (
-        <article className={`mb-8 ${style.ingredient}`} onClick={HandleClick}>
-            {__v !== 0 && <Counter count={__v} size="default"/>}
+        <article 
+            className={`mb-8 ${style.ingredient}`} 
+            onClick={HandleClick}
+            ref={dragRef}
+            >
+            {!!__v && <Counter count={__v} size="default"/>}
             <img src={image} alt='Ингредиент' className={style.img}/>
             <div className={`mt-1 mb-1 ${style.cost}`}>
                 <p className="text text_type_digits-default">{price}</p>

@@ -5,10 +5,10 @@ import {ingredientsPropsType} from '../../utils/prop-type';
 import style from '../ingredients-list/ingredients-list.module.css';
 
 
-const IngredientCategory = ({categoryData, title, id}) => {
+const IngredientCategory = ({categoryData, title, id, refer}) => {
     return (
         <>
-        <h3 className={`text text_type_main-medium mb-6 mt-10`} id={id}>
+        <h3 className={`text text_type_main-medium mb-6 mt-10`} id={id} ref={refer} >
             {title}
         </h3>
         <div className={style.category}>    
