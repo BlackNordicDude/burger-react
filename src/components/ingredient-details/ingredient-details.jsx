@@ -1,22 +1,11 @@
-import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useSelector } from 'react-redux';
 import style from '../ingredient-details/ingredient-details.module.css'
-import { BurgerContext } from '../../contexts/burger-context';
-import { useContext } from 'react';
+
 
 const IngredientDetails = () => {
+    const { selectedIngredient } = useSelector(store => ({selectedIngredient: store.modal.selectedIngredient}))
+    const {image_large, name, calories, fat, proteins, carbohydrates} = selectedIngredient;
 
-    const { state, dispatcher } = useContext(BurgerContext);
-    const {image_large, name, calories, fat, proteins, carbohydrates} = state.selectedIngredient;
-    const addInConstructor = () => {
-        state.selectedIngredient.__v += 1;
-        if (state.selectedIngredient.type === 'bun') {
-            dispatcher({type: 'addBun', payload: state.selectedIngredient})
-            dispatcher({type: 'calcCost', payload: state.selectedIngredient.price * 2})
-        } else {
-            dispatcher({type: 'addInner', payload: state.selectedIngredient})
-            dispatcher({type: 'calcCost', payload: state.selectedIngredient.price})
-        } 
-    }
     return (
         <>
             <img src={image_large} alt="Ingredient" />
@@ -39,7 +28,6 @@ const IngredientDetails = () => {
                     <p className="text text_type_digits-default">{carbohydrates}</p>
                 </div>
             </div>
-            <Button onClick={addInConstructor}>+</Button>
         </>
     )
 }
