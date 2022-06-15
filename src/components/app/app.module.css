@@ -3,9 +3,8 @@
     max-width: 1280px;
 }
 
-.sections {
-    display: flex;
-    justify-content: space-between;
+.ingredOwnPage {
+    color: #ffffff;
 }
 
 ::-webkit-scrollbar {

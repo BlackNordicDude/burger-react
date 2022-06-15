@@ -3,26 +3,21 @@ import {
     LOAD_INGREDIENTS_FAILED,
     LOAD_INGREDIENTS_SUCCESS
 } from './index'
-
-const BURGER_API_URL = 'https:/norma.nomoreparties.space/api';
+import { getIngredients } from '../../utils/burger-api';
 
 export function getIngredientsData() {
     return function(dispatch) {
         dispatch({
             type: LOAD_INGREDIENTS_REQUEST
         })
-        fetch(`${BURGER_API_URL}/ingredients`)
-        .then(res => res.ok ? res.json() : res.json().then((err) => Promise.reject(err)))
-        .then(res => {
-            if (res && res.success) {
-                dispatch({
+        getIngredients()
+        .then(data => {
+            dispatch({
                     type: LOAD_INGREDIENTS_SUCCESS,
-                    ingredients: res.data
+                    ingredients: data
                 })
-            } else {
-                dispatch({type: LOAD_INGREDIENTS_FAILED})
-            }
-        }).catch(err =>{
+        })
+        .catch(err =>{
             console.log(err)
             dispatch({type: LOAD_INGREDIENTS_FAILED})})
     }

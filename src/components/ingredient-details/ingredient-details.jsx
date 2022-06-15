@@ -3,7 +3,9 @@ import style from '../ingredient-details/ingredient-details.module.css'
 
 
 const IngredientDetails = () => {
-    const { selectedIngredient } = useSelector(store => ({selectedIngredient: store.modal.selectedIngredient}))
+
+    const {selectedIngredient} = useSelector(store => ({selectedIngredient: store.ingredients.selectedIngredient}))
+    console.log(selectedIngredient);
     const {image_large, name, calories, fat, proteins, carbohydrates} = selectedIngredient;
 
     return (
