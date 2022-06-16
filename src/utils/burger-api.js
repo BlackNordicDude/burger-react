@@ -30,7 +30,7 @@ export const fetchWithRefresh = async (url, options) => {
             }
             console.log('fetchWithRefresh');
             localStorage.setItem('refreshToken', refreshData.refreshToken);
-            localStorage.setItem('accessToken', refreshData.accessToken);
+            setCookie('accessToken', refreshData.accessToken, {expires: 1200});
             options.headers.authorization = refreshData.accessToken;
             const res = await fetch(url, options);
             return await checkRes(res);
@@ -82,7 +82,7 @@ export const registerUser = data => {
         if (data.success) {
             let authToken = data.accessToken.split('Bearer ')[1];
             localStorage.setItem('refreshToken', data.refreshToken);
-            setCookie('accessToken', authToken);
+            setCookie('accessToken', authToken, {expires: 1200});
             return data
         };
         return Promise.reject(data)
@@ -102,7 +102,7 @@ export const loginUser = data => {
         if (data.success) {
             let authToken = data.accessToken.split('Bearer ')[1];
             localStorage.setItem('refreshToken', data.refreshToken);
-            setCookie('accessToken', authToken);
+            setCookie('accessToken', authToken, {expires: 1200});
             return data
         };
         return Promise.reject(data)
@@ -149,7 +149,6 @@ export const getUser = () => {
 }
 
 export const updateUser = (user) => {
-    console.log(user);
     return fetchWithRefresh(`${BURGER_API_URL}/auth/user`, {
         method: 'PATCH',
         headers: {

@@ -16,34 +16,36 @@ const RegisterPage = () => {
         'password': password,
         'name': name,
     }
-    const onClick = () => {
+    const onSubmit = () => {
         dispatch(register(data)).finally(
-                history.push('/login')
+            history.push('/login')
         )     
     }
     return (
         <div className={style.main}>
             <p className='text text_type_main-medium'>Регистрация</p>
-            <div className="mt-6">
+            <form onSubmit={onSubmit}>
+                <div className="mt-6">
                 <Input
                     value={name}
                     onChange={e => setName(e.target.value)}
                     placeholder='Имя'/>
-            </div>
-            <div className="mt-6">
-               <Input
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    placeholder='E-mail'/> 
-            </div>
-            <div className="mt-6">
-                <PasswordInput
-                value={password}
-                onChange={e => setPassword(e.target.value)}/>
-            </div>
-            <div className="mt-6">
-                <Button onClick={onClick}>Зарегистрироваться</Button>
-            </div>
+                </div>
+                <div className="mt-6">
+                <Input
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        placeholder='E-mail'/> 
+                </div>
+                <div className="mt-6">
+                    <PasswordInput
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}/>
+                </div>
+                <div className="mt-6">
+                    <Button type='submit'>Зарегистрироваться</Button>
+                </div>
+            </form>
             <div className={`mt-20 text text_type_main-default text_color_inactive ${style.extra}`}>
                 <p className={style.text}>Уже зарегистрированы?</p>
                 <Link to='/login'>Войти</Link>

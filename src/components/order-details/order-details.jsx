@@ -12,7 +12,7 @@ const OrderDetails = () => {
     return (
         <>
             { 
-                order ? (
+                !orderError ? (
                 <>
                     <p className={`mb-8 text text_type_digits-large ${style.number}`}>{order}</p>
                     <p className="mb-15 text text_type_main-medium">идентификатор заказа</p>

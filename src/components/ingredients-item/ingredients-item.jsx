@@ -4,18 +4,11 @@ import {ingredientsPropsType} from '../../utils/prop-type';
 import style from '../ingredients-item/ingredients-item.module.css';
 import { useDrag } from "react-dnd";
 import { Link, useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { ADD_MODAL_INGREDIENT } from "../../services/actions";
 
 const Ingredient = ({ ingredientData }) => {
 
-    const dispatch = useDispatch()
-
     const {image, price, name, __v, _id} = ingredientData;
 
-    const onClick = () => {
-        dispatch({type: ADD_MODAL_INGREDIENT, payload: ingredientData})
-    }
     const location = useLocation();
 
     const [, dragRef] = useDrag({
@@ -26,7 +19,6 @@ const Ingredient = ({ ingredientData }) => {
     return (
         <Link 
             className={`mb-8 ${style.ingredient}`} 
-            onClick={onClick}
             to={{
                 pathname: `/ingredients/${_id}`,
                 state: { background: location },
