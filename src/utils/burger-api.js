@@ -1,3 +1,5 @@
+import { getCookie, setCookie } from "./cookie";
+
 const BURGER_API_URL = 'https:/norma.nomoreparties.space/api';
 
 const checkRes = (res) => {
@@ -21,6 +23,7 @@ export const fetchWithRefresh = async (url, options) => {
         const res = await fetch(url, options);
         return await checkRes(res)
     } catch (err) {
+        console.log(err);
         if (err.message === 'jwt expired') {
             const refreshData = await refreshToken();
             if (!refreshData.success) {
@@ -39,6 +42,7 @@ export const fetchWithRefresh = async (url, options) => {
 }
 
 export const getIngredients = () => {
+    console.log('getIngred');
     return fetch(`${BURGER_API_URL}/ingredients`)
     .then(checkRes)
     .then((data) => {
@@ -55,7 +59,7 @@ export const getOrder = (data) => {
         credentials: 'same-origin',
         headers: {
             'Content-Type': 'application/json',
-            authorization: localStorage.getItem('accessToken')
+            authorization: getCookie('accessToken')
         },
         body:  JSON.stringify({ingredients: data})
     })
@@ -76,7 +80,12 @@ export const registerUser = data => {
     })
     .then(checkRes)
     .then(data => {
-        if (data.success) return data;
+        if (data.success) {
+            let authToken = data.accessToken.split('Bearer ')[1];
+            localStorage.setItem('refreshToken', data.refreshToken);
+            setCookie('accessToken', authToken);
+            return data
+        };
         return Promise.reject(data)
     })
 }
@@ -94,7 +103,7 @@ export const loginUser = data => {
         if (data.success) {
             let authToken = data.accessToken.split('Bearer ')[1];
             localStorage.setItem('refreshToken', data.refreshToken);
-            localStorage.setItem('accessToken', authToken);
+            setCookie('accessToken', authToken);
             return data
         };
         return Promise.reject(data)
@@ -135,7 +144,7 @@ export const getUser = () => {
     console.log('getUser');
     return fetchWithRefresh(`${BURGER_API_URL}/auth/user`, {
         headers: {
-            authorization: localStorage.getItem('accessToken')
+            authorization: getCookie('accessToken')
         },
     })
 }
@@ -146,7 +155,7 @@ export const updateUser = (user) => {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
-            authorization: localStorage.getItem('accessToken')
+            authorization: getCookie('accessToken')
         },
         body: JSON.stringify(user)
     }) 

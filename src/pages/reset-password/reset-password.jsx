@@ -2,30 +2,14 @@ import { Input, PasswordInput, Button } from "@ya.praktikum/react-developer-burg
 import { Link } from "react-router-dom";
 import style from '../reset-password/reset-password.module.css'
 import { useState } from "react";
+import { resetPassword } from "../../utils/burger-api";
 
 const ResetPassPage = () => {
-    const BURGER_API_URL = 'https:/norma.nomoreparties.space/api';
     const [token, setToken] = useState('');
     const [newPass, setNewPass] = useState('');
 
     const onClick = () => {
-        fetch(`${BURGER_API_URL}/password-reset/reset`, {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body:  JSON.stringify({"password": newPass, "token": token})
-        })
-        .then(res => res.ok ? res.json() : res.json().then((err) => Promise.reject(err)))
-        .then(res => {
-            if (res && res.success) {
-                console.log(res.message)
-            }
-        })
-        .catch(err => console.log(err))
+        resetPassword({password: newPass, token: token})
     }
     return (
         <div className={style.main}>

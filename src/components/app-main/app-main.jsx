@@ -7,7 +7,8 @@ import style from '../app-main/app-main.module.css'
 
 const AppMain = ( ) => {
     const { ingredientsError, ingredientsRequest } = useSelector(store => ({
-
+      ingredientsError: store.ingredients.ingredientsError,
+      ingredientsRequest: store.ingredients.ingredientsRequest,
     }))
     return (
         ingredientsRequest ? (<h1 className='text text_type_main-large'>Loading data...</h1>) :

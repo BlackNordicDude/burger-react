@@ -1,6 +1,8 @@
 .ingredient {
     position: relative;
     width: 272px;
+    text-decoration: none;
+    color: #ffffff;
 }
 
 .ingredient:nth-child(odd) {

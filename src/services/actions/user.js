@@ -17,15 +17,23 @@ import {
  import { 
     loginUser,
     registerUser,
-    forgotPassword,
-    resetPassword,
     getUser,
     updateUser,
     logout,
  } from "../../utils/burger-api";
+import { deleteCookie, getCookie } from "../../utils/cookie";
 
 export function checkUserAuth() {
     return function(dispatch) {
+        if (getCookie('accessToken')) {
+            getUser()
+            .finally(() => {
+                dispatch({type: AUTH_CHECKED});
+            })
+        } else {
+            dispatch({type: AUTH_CHECKED});
+        }
+        
         dispatch({type: AUTH_CHECKED})
     }
 }
@@ -39,7 +47,8 @@ export function login(data) {
                 type: LOGIN_USER_SUCCESS, 
                 payload: data.user
             })
-        }).catch(err => dispatch({
+        })
+        .catch(err => dispatch({
             type: LOGIN_USER_ERROR
         }))
     }
@@ -50,6 +59,7 @@ export function register(data) {
         dispatch({type: REGISTER_USER_REQUEST})
         registerUser(data)
         .then(data => {
+            console.log(data);
             dispatch({
                 type: REGISTER_USER_SUCCESS,
                 payload: data.user
@@ -91,8 +101,12 @@ export function updateUserData(user) {
 
 export function logoutUser() {
     return function(dispatch) {
-        console.log('logout');
         logout()
-        .then(dispatch({type: USER_LOGOUT}))
+        .then(() => {
+            dispatch({type: USER_LOGOUT});
+            deleteCookie('accessToken');
+            localStorage.clear();
+        })
+        .catch(err => console.log(err))
     }
 }

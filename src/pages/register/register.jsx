@@ -1,11 +1,13 @@
 import style from '../register/register.module.css'
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, useHistory } from 'react-router-dom'
-import { registerUser } from '../../utils/burger-api'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { register } from '../../services/actions/user'
 
 const RegisterPage = () => {
     const history = useHistory();
+    const dispatch = useDispatch();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -15,13 +17,9 @@ const RegisterPage = () => {
         'name': name,
     }
     const onClick = () => {
-        registerUser(data)
-        .then(res => {
-            if (res.success) {
+        dispatch(register(data)).finally(
                 history.push('/login')
-            } 
-        })
-       
+        )     
     }
     return (
         <div className={style.main}>

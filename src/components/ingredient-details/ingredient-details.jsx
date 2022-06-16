@@ -1,15 +1,33 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import { getIngredientsData } from '../../services/actions/ingredients';
 import style from '../ingredient-details/ingredient-details.module.css'
 
 
 const IngredientDetails = () => {
+    const dispatch = useDispatch();
+    const location = useLocation();
 
-    const {selectedIngredient} = useSelector(store => ({selectedIngredient: store.ingredients.selectedIngredient}))
-    console.log(selectedIngredient);
+    useEffect(() => {
+        dispatch(getIngredientsData())
+    },[dispatch])
+    
+    const id = location.pathname.split('/')[2];
+
+    const {ingredients, ingredientsRequest} = useSelector(store => ({
+        ingredients: store.ingredients.ingredients,
+        ingredientsRequest: store.ingredients.ingredientsRequest
+    }))
+
+    console.log(ingredients, ingredientsRequest);
+
+    const selectedIngredient = ingredients.find(ingredient => ingredient._id === id)
     const {image_large, name, calories, fat, proteins, carbohydrates} = selectedIngredient;
 
     return (
-        <>
+        !ingredients ? <p>Loading...</p> :
+        (<>
             <img src={image_large} alt="Ingredient" />
             <p className='mt-4 mb-8 text text_type_main-medium'>{name}</p>
             <div className={`text_color_inactive ${style.descr}`}>
@@ -30,7 +48,7 @@ const IngredientDetails = () => {
                     <p className="text text_type_digits-default">{carbohydrates}</p>
                 </div>
             </div>
-        </>
+        </>)
     )
 }
 

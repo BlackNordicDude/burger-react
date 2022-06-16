@@ -5,26 +5,9 @@ import style from '../forgot-password/forgot-password.module.css';
 
 const ForgotPassPage = ( ) => {
     const [email, setEmail] = useState('')
-    const BURGER_API_URL = 'https:/norma.nomoreparties.space/api';
 
     const onClick = () => {
-        fetch(`${BURGER_API_URL}/password-reset`, {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body:  JSON.stringify({"email": email})
-        })
-        .then(res => res.ok ? res.json() : res.json().then((err) => Promise.reject(err)))
-        .then(res => {
-            if (res && res.success) {
-                console.log(res.message)
-            }
-        })
-        .catch(err => console.log(err))
+       
     }
 
     return (

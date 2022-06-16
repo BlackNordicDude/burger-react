@@ -65,7 +65,7 @@ function App() {
           <ResetPassPage/>
         </ProtectedRoute>
 
-        <Route path='ingredients/:id' exact>
+        <Route path='/ingredients/:id' exact>
           <div className={style.ingredOwnPage}>
             <p className="text text_type_main-large">Детали ингредиента</p>
             <IngredientDetails />
@@ -82,22 +82,27 @@ function App() {
 
       </Switch>
       { background && (
-        <Route
-          path='/ingredients/:id'
-          children={
-            <Modal onClose={modalClose} title='Детали ингредиента'>
-               <IngredientDetails />
-            </Modal>
-          }
-        />
-      )
-
+        <>
+          <Route
+            path='/ingredients/:id'
+            children={
+              <Modal onClose={modalClose} title='Детали ингредиента'>
+                <IngredientDetails />
+              </Modal>
+            }
+          />
+          <Route 
+            path='/feed/:number'
+            exact
+            children={
+              <Modal onClose={modalClose} title='Заказ'>
+                <OrderDetails />
+              </Modal>
+            }
+          />
+        </>
+        )
       }
-      {/* {!!order && !!isModalOpen && (
-            <Modal>
-                <OrderDetails/> 
-            </Modal>
-        )} */}
     </div>
   );
 }

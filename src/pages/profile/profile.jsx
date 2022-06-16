@@ -11,7 +11,7 @@ const ProfilePage = () => {
     useEffect(() => {
         dispatch(getUserData());
         
-    },[])
+    },[dispatch])
 
     const {nameR, emailR} = useSelector(store => ({
         nameR: store.user.data.name,
@@ -38,24 +38,32 @@ const ProfilePage = () => {
 
     const logout = () => {
         dispatch(logoutUser());
-        localStorage.setItem('accessToken', '')
     }
 
     return (
         <div className={style.main}>
             <div className={`mr-15 ${style.nav}`}>
-                <div className={`text text_type_main-medium ${style.link}`}>
-                    <NavLink to='/profile'>
+                <div >
+                    <NavLink 
+                        to='/profile'
+                        className={`text text_type_main-medium ${style.link}`}
+                        activeClassName={style.active_link}>
                         Профиль
                     </NavLink> 
                 </div>
-                <div className={`text text_type_main-medium ${style.link}`}>
-                    <NavLink to='/profile/orders'>
+                <div >
+                    <NavLink 
+                        to='/profile/orders'
+                        className={`text text_type_main-medium ${style.link}`}
+                        activeClassName={style.active_link}>
                         История заказов
                     </NavLink>
                 </div>
-                <div onClick={logout} className={`text text_type_main-medium ${style.link}`}>
-                    <NavLink to='/login'>
+                <div onClick={logout} >
+                    <NavLink 
+                        to='/login'
+                        className={`text text_type_main-medium ${style.link}`}
+                        activeClassName={style.active_link}>
                         Выход
                     </NavLink> 
                 </div>
