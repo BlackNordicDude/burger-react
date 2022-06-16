@@ -1,34 +1,41 @@
 import { NavLink } from "react-router-dom";
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import style from '../profile/profile.module.css'
-import { getUserData, updateUserData, logoutUser } from "../../services/actions/user";
+import { updateUserData, logoutUser } from "../../services/actions/user";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const ProfilePage = () => {
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(getUserData());
-        
-    },[dispatch])
-
     const {nameR, emailR} = useSelector(store => ({
         nameR: store.user.data.name,
         emailR: store.user.data.email
     }))
 
+    let pass = '*********'
+
     const [userData, setUserData] = useState({
         name: nameR,
         email: emailR,
+        pass: pass
     })
+
+    const cancelChange = () => {
+        setUserData({
+            name: nameR,
+            email: emailR,
+            pass: pass
+        })
+    }
 
     useEffect(() => {
         setUserData({
             name: nameR,
             email: emailR,
+            pass: pass
         })
-    }, [nameR, emailR, userData.pass])
+    }, [nameR, emailR, pass])
 
     const update = () => {
         console.log('update', userData);
@@ -96,14 +103,18 @@ const ProfilePage = () => {
                 </div>
                 <div className={style.tab}>
                     <Input
-                    value={'********'}
+                    value={userData.pass}
+                    onChange={e => setUserData({
+                        ...userData,
+                        pass: e.target.value
+                    })}
                     type="password"
                     placeholder="pass"
                     icon="EditIcon"/> 
                 </div>
                 <div className={`mt-6 ${style.buttons}`}>
                     <Button 
-                
+                        onClick={cancelChange}
                         type="secondary">
                         Отмена
                     </Button>
