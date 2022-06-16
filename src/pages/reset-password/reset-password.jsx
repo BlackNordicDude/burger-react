@@ -10,6 +10,9 @@ const ResetPassPage = () => {
 
     const onClick = () => {
         resetPassword({password: newPass, token: token})
+        .then(res => {
+            console.log(res);
+        })
     }
     return (
         <div className={style.main}>

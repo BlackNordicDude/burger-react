@@ -1,13 +1,22 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { forgotPassword } from '../../utils/burger-api';
 import style from '../forgot-password/forgot-password.module.css';
 
 const ForgotPassPage = ( ) => {
     const [email, setEmail] = useState('')
+    const history = useHistory();
 
     const onClick = () => {
-       
+       forgotPassword({email: email})
+       .then(res => {
+        if (res.success === true) {
+            history.push('/reset-password');
+           } else {
+            setEmail('');
+           }
+       })
     }
 
     return (
