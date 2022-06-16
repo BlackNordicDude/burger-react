@@ -7,10 +7,11 @@ import { ADD_BUN, ADD_INNER, REMOVE_INNER, PLUS_COST, MINUS_COST, RESET_BUN_COST
 import { useDrop } from "react-dnd";
 import { v4 as uuidv4 } from 'uuid';
 import { InnerItem } from '../burger-constructor-inner/burger-constructor-inner';
-import { useHistory } from "react-router-dom";
+import { useHistory, Link, useLocation } from "react-router-dom";
 
 const BurgerConstructor = () => {
-    const history = useHistory()
+    const history = useHistory();
+    const location = useLocation();
 
     const { bun, inner, totalCost, number } = useSelector(store => {
         return ({
@@ -34,9 +35,6 @@ const BurgerConstructor = () => {
         arrOfIngredients.push(bun._id);
         inner.map(el => arrOfIngredients.push(el._id));
         dispatch(getOrderNum(arrOfIngredients))
-        if (number) {
-            history.push(`/feed/${number}`)
-        }
     }
 
     const onDropHandler = (item) => {
@@ -127,7 +125,16 @@ const BurgerConstructor = () => {
                     <p className="text text_type_digits-medium">{totalCost}</p>  
                     <CurrencyIcon type='primary'/>
                 </div>
-                <Button onClick={setOrder}>Оформите заказ</Button>  
+                <Button onClick={setOrder}>
+                    <Link 
+                    className={style.order_link}
+                    to={{
+                        pathname: `/feed/${number}`,
+                        state: { background: location },
+                     }}>
+                        Оформите заказ
+                    </Link> 
+                </Button>  
             </div>
         </section>
     )

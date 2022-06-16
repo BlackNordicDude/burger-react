@@ -7,6 +7,15 @@
     color: #ffffff;
 }
 
+.ingredOwnPage > p {
+    text-align: center;
+}
+
+.ingredOwnPage > img {
+    display: block;
+    margin: 0 auto;
+}
+
 ::-webkit-scrollbar {
     width: 8px;
     background: #2F2F37;

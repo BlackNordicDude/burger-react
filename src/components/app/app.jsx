@@ -92,11 +92,11 @@ function App() {
               </Modal>
             }
           />
-          <Route 
+          <ProtectedRoute 
             path='/feed/:number'
             exact
             children={
-              <Modal onClose={modalClose} title='Заказ'>
+              <Modal onClose={modalClose}>
                 <OrderDetails />
               </Modal>
             }

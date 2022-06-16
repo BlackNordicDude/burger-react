@@ -38,3 +38,8 @@
     display: flex;
     align-items: center;
 }
+
+.order_link {
+    text-decoration: none;
+    color: #ffffff;
+}

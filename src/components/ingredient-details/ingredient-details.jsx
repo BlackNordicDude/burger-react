@@ -15,19 +15,16 @@ const IngredientDetails = () => {
     
     const id = location.pathname.split('/')[2];
 
-    const {ingredients, ingredientsRequest} = useSelector(store => ({
+    const {ingredients} = useSelector(store => ({
         ingredients: store.ingredients.ingredients,
-        ingredientsRequest: store.ingredients.ingredientsRequest
     }))
-
-    console.log(ingredients, ingredientsRequest);
+    if (ingredients.length === 0) return <p>Loading...</p>
 
     const selectedIngredient = ingredients.find(ingredient => ingredient._id === id)
     const {image_large, name, calories, fat, proteins, carbohydrates} = selectedIngredient;
 
     return (
-        !ingredients ? <p>Loading...</p> :
-        (<>
+        <>
             <img src={image_large} alt="Ingredient" />
             <p className='mt-4 mb-8 text text_type_main-medium'>{name}</p>
             <div className={`text_color_inactive ${style.descr}`}>
@@ -48,7 +45,7 @@ const IngredientDetails = () => {
                     <p className="text text_type_digits-default">{carbohydrates}</p>
                 </div>
             </div>
-        </>)
+        </>
     )
 }
 
