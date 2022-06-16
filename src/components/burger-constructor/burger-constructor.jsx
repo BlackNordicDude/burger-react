@@ -3,18 +3,21 @@ import { ConstructorElement, CurrencyIcon, Button, DragIcon } from "@ya.praktiku
 import { getOrderNum } from "../../services/actions/order";
 import { useDispatch, useSelector } from "react-redux";
 import style from '../burger-constructor/burger-constructor.module.css';
-import { ADD_BUN, ADD_INNER, OPEN_MODAL, REMOVE_INNER, PLUS_COST, MINUS_COST, RESET_BUN_COST, SORT_INGREDIENTS, PLUS_V, MINUS_V } from "../../services/actions";
+import { ADD_BUN, ADD_INNER, REMOVE_INNER, PLUS_COST, MINUS_COST, RESET_BUN_COST, SORT_INGREDIENTS, PLUS_V, MINUS_V } from "../../services/actions";
 import { useDrop } from "react-dnd";
 import { v4 as uuidv4 } from 'uuid';
 import { InnerItem } from '../burger-constructor-inner/burger-constructor-inner';
+import { useHistory } from "react-router-dom";
 
 const BurgerConstructor = () => {
-    
-    const { bun, inner, totalCost } = useSelector(store => {
+    const history = useHistory()
+
+    const { bun, inner, totalCost, number } = useSelector(store => {
         return ({
             bun: store.constructorState.constructorIngredient.bun,
             inner: store.constructorState.constructorIngredient.inner,
             totalCost: store.constructorState.totalCost,
+            number: store.order.order,
         })
     })
     const dispatch = useDispatch();
@@ -30,9 +33,10 @@ const BurgerConstructor = () => {
         const arrOfIngredients = [];
         arrOfIngredients.push(bun._id);
         inner.map(el => arrOfIngredients.push(el._id));
-
         dispatch(getOrderNum(arrOfIngredients))
-        dispatch({type: OPEN_MODAL})
+        if (number) {
+            history.push(`/feed/${number}`)
+        }
     }
 
     const onDropHandler = (item) => {

@@ -85,6 +85,7 @@ function App() {
         <>
           <Route
             path='/ingredients/:id'
+            exact
             children={
               <Modal onClose={modalClose} title='Детали ингредиента'>
                 <IngredientDetails />
