@@ -16,7 +16,8 @@ const RegisterPage = () => {
         'password': password,
         'name': name,
     }
-    const onSubmit = () => {
+    const onSubmit = (e) => {
+        e.preventDefault();
         dispatch(register(data)).finally(
             history.push('/login')
         )     

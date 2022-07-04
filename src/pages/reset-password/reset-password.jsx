@@ -17,7 +17,7 @@ const ResetPassPage = () => {
     return (
         <div className={style.main}>
             <p className='text text_type_main-medium mb-6'>Восстановление пароля</p>
-            <PasswordInput
+            <Input
                 onChange={e => setNewPass(e.target.value)}
                 value={newPass}
                 />

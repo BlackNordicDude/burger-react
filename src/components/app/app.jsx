@@ -20,7 +20,6 @@ import { useDispatch } from 'react-redux';
 import style from './app.module.css';
 import { checkUserAuth } from '../../services/actions/user';
 
-
 function App() {
 
   const dispatch = useDispatch();
@@ -49,7 +48,7 @@ function App() {
           <RegisterPage/>
         </ProtectedRoute>
 
-        <ProtectedRoute path='/profile' exact={true}>
+        <ProtectedRoute path='/profile' xact={true}>
           <ProfilePage/>
         </ProtectedRoute>
 
@@ -64,7 +63,7 @@ function App() {
         <ProtectedRoute onlyUnAuth={true} path='/reset-password' exact={true}>
           <ResetPassPage/>
         </ProtectedRoute>
-
+        
         <Route path='/ingredients/:id' exact>
           <div className={style.ingredOwnPage}>
             <p className="text text_type_main-large">Детали ингредиента</p>
@@ -92,7 +91,7 @@ function App() {
               </Modal>
             }
           />
-          <ProtectedRoute 
+          <Route 
             path='/feed/:number'
             exact
             children={

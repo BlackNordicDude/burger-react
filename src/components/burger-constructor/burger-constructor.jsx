@@ -7,18 +7,18 @@ import { ADD_BUN, ADD_INNER, REMOVE_INNER, PLUS_COST, MINUS_COST, RESET_BUN_COST
 import { useDrop } from "react-dnd";
 import { v4 as uuidv4 } from 'uuid';
 import { InnerItem } from '../burger-constructor-inner/burger-constructor-inner';
-import { useHistory, Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const BurgerConstructor = () => {
-    const history = useHistory();
     const location = useLocation();
 
-    const { bun, inner, totalCost, number } = useSelector(store => {
+    const { bun, inner, totalCost, number, user } = useSelector(store => {
         return ({
             bun: store.constructorState.constructorIngredient.bun,
             inner: store.constructorState.constructorIngredient.inner,
             totalCost: store.constructorState.totalCost,
             number: store.order.order,
+            user: store.user.data,
         })
     })
     const dispatch = useDispatch();
@@ -30,7 +30,6 @@ const BurgerConstructor = () => {
     }
 
     const setOrder = () => {
-
         const arrOfIngredients = [];
         arrOfIngredients.push(bun._id);
         inner.map(el => arrOfIngredients.push(el._id));
@@ -124,17 +123,29 @@ const BurgerConstructor = () => {
                 <div className={`mr-10 ${style.total_price}`}>
                     <p className="text text_type_digits-medium">{totalCost}</p>  
                     <CurrencyIcon type='primary'/>
-                </div>
-                <Button onClick={setOrder}>
-                    <Link 
-                    className={style.order_link}
-                    to={{
-                        pathname: `/feed/${number}`,
-                        state: { background: location },
-                     }}>
-                        Оформите заказ
-                    </Link> 
-                </Button>  
+                </div> 
+                {
+                    user ? 
+                    <Button onClick={setOrder}>
+                        <Link 
+                        className={style.order_link}
+                        to={{
+                            pathname: `/feed/${number}`,
+                            state: { background: location },
+                        }}>
+                            Оформите заказ
+                        </Link> 
+                    </Button>  : 
+                    <Button onClick={setOrder}>
+                        <Link 
+                        className={style.order_link}
+                        to={{
+                            pathname: `/login`
+                        }}>
+                            Оформите заказ
+                        </Link> 
+                    </Button>
+                }                
             </div>
         </section>
     )

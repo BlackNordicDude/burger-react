@@ -1,20 +1,18 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getIngredientsData } from '../../services/actions/ingredients';
 import style from '../ingredient-details/ingredient-details.module.css'
 
 
 const IngredientDetails = () => {
     const dispatch = useDispatch();
-    const location = useLocation();
 
     useEffect(() => {
         dispatch(getIngredientsData())
     },[dispatch])
     
-    const id = location.pathname.split('/')[2];
-    /* const { id } = useParams(); */
+    const { id } = useParams();
     const {ingredients} = useSelector(store => ({
         ingredients: store.ingredients.ingredients,
     }))

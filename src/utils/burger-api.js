@@ -142,7 +142,12 @@ export const resetPassword = data => {
 export const getUser = () => {
     console.log('getUser');
     return fetchWithRefresh(`${BURGER_API_URL}/auth/user`, {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
         headers: {
+            'Content-Type': 'application/json',
             authorization: getCookie('accessToken')
         },
     })

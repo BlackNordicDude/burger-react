@@ -28,6 +28,7 @@ export function checkUserAuth() {
         if (getCookie('accessToken')) {
             getUser()
             .finally(() => {
+                console.log('authTrue');
                 dispatch({type: AUTH_CHECKED});
             })
         } else {
