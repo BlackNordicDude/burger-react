@@ -25,7 +25,7 @@ const RegisterPage = () => {
     return (
         <div className={style.main}>
             <p className='text text_type_main-medium'>Регистрация</p>
-            <form onSubmit={onSubmit}>
+            <form className={style.form} onSubmit={onSubmit}>
                 <div className="mt-6">
                 <Input
                     value={name}
@@ -44,7 +44,7 @@ const RegisterPage = () => {
                     onChange={e => setPassword(e.target.value)}/>
                 </div>
                 <div className="mt-6">
-                    <Button type='submit'>Зарегистрироваться</Button>
+                    <Button>Зарегистрироваться</Button>
                 </div>
             </form>
             <div className={`mt-20 text text_type_main-default text_color_inactive ${style.extra}`}>

@@ -21,7 +21,7 @@ const LoginPage = ( ) => {
     return (
         <div className={style.main}>
             <p className="text text_type_main-medium mb-6">Вход</p>
-            <form onSubmit = {submitForm}>
+            <form className={style.form} onSubmit = {submitForm}>
                 <div className="mb-6">
                 <Input
                     value={form.email}

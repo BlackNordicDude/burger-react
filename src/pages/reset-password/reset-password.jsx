@@ -1,4 +1,4 @@
-import { Input, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
+import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
 import style from '../reset-password/reset-password.module.css'
 import { useState } from "react";

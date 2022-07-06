@@ -80,9 +80,8 @@ export const registerUser = data => {
     .then(checkRes)
     .then(data => {
         if (data.success) {
-            let authToken = data.accessToken.split('Bearer ')[1];
             localStorage.setItem('refreshToken', data.refreshToken);
-            setCookie('accessToken', authToken, {expires: 1200});
+            setCookie('accessToken', data.accessToken, {expires: 1200});
             return data
         };
         return Promise.reject(data)
@@ -100,9 +99,8 @@ export const loginUser = data => {
     .then(checkRes)
     .then(data => {
         if (data.success) {
-            let authToken = data.accessToken.split('Bearer ')[1];
             localStorage.setItem('refreshToken', data.refreshToken);
-            setCookie('accessToken', authToken, {expires: 1200});
+            setCookie('accessToken', data.accessToken, {expires: 1200});
             return data
         };
         return Promise.reject(data)

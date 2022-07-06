@@ -126,25 +126,29 @@ const BurgerConstructor = () => {
                 </div> 
                 {
                     user ? 
-                    <Button onClick={setOrder}>
+                    
                         <Link 
                         className={style.order_link}
                         to={{
                             pathname: `/feed/${number}`,
                             state: { background: location },
                         }}>
-                            Оформите заказ
+                            <Button onClick={setOrder}>
+                                Оформите заказ
+                            </Button>
                         </Link> 
-                    </Button>  : 
-                    <Button onClick={setOrder}>
+                      : 
+                   
                         <Link 
                         className={style.order_link}
                         to={{
                             pathname: `/login`
-                        }}>
-                            Оформите заказ
+                        }}> 
+                            <Button onClick={setOrder}>
+                                Оформите заказ 
+                            </Button>
                         </Link> 
-                    </Button>
+                   
                 }                
             </div>
         </section>
