@@ -1,0 +1,22 @@
+.main {
+    margin: 180px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.extra {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.text {
+    margin: 0;
+}

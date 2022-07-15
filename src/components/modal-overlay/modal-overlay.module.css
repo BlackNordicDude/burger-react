@@ -3,7 +3,7 @@
     height: 115vh;
     opacity: 0.6;
     background: #000;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
 }

@@ -1,9 +1,17 @@
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import style from '../ingredient-details/ingredient-details.module.css'
 
 
 const IngredientDetails = () => {
-    const { selectedIngredient } = useSelector(store => ({selectedIngredient: store.modal.selectedIngredient}))
+    
+    const { id } = useParams();
+    const {ingredients} = useSelector(store => ({
+        ingredients: store.ingredients.ingredients,
+    }))
+    if (ingredients.length === 0) return <p>Loading...</p>
+
+    const selectedIngredient = ingredients.find(ingredient => ingredient._id === id)
     const {image_large, name, calories, fat, proteins, carbohydrates} = selectedIngredient;
 
     return (

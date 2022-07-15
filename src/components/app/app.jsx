@@ -1,57 +1,108 @@
 import AppHeader from '../app-header/app-header';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-import BurgerConstructor from '../burger-constructor/burger-constructor';
+import AppMain from '../app-main/app-main';
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-
-import { useSelector, useDispatch } from 'react-redux';
-
-import style from './app.module.css';
+import LoginPage from '../../pages/login/login';
+import RegisterPage from '../../pages/register/register';
+import ProfilePage from '../../pages/profile/profile';
+import ForgotPassPage from '../../pages/forgot-password/forgot-password';
+import ResetPassPage from '../../pages/reset-password/reset-password';
+import Error404Page from '../../pages/404';
+import ProfileOrderPage from '../../pages/profile-orders/profile-orders';
+import ProtectedRoute from '../protected-router/protected-router';
 
 import { getIngredientsData } from '../../services/actions/ingredients';
 import { useEffect } from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
+import style from './app.module.css';
+import { checkUserAuth } from '../../services/actions/user';
 
 function App() {
-  const { ingredientsError, ingredientsRequest, order, isModalOpen, selectedIngredient } = useSelector(store => ({
-    ingredientsError: store.ingredients.ingredientsError,
-    ingredientsRequest: store.ingredients.ingredientsRequest,
-    order: store.order.order,
-    isModalOpen: store.modal.isModalOpen,
-    selectedIngredient: store.modal.selectedIngredient
-  }))
+
   const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
   
-  useEffect(() => dispatch(getIngredientsData()),[dispatch]);
+  const background = location.state && location.state.background;
+
+  const modalClose = () => history.goBack();
+
+  useEffect(() => {
+    dispatch(getIngredientsData())
+    dispatch(checkUserAuth())
+  },[dispatch]);
 
   return (
     <div className={style.app}>
       <AppHeader/>
-      {
-        ingredientsRequest ? (<h1 className='text text_type_main-large'>Loading data...</h1>) :
-        ingredientsError ? (<h1 className='text text_type_main-large'>Loading error</h1>) :
-        (<main className={style.main}>
-          <p className={`text text_type_main-large mb-5`}>Соберите бургер</p>
-          <div className={style.sections}>
-            <DndProvider backend={HTML5Backend}>
-              <BurgerIngredients />
-              <BurgerConstructor />
-            </DndProvider> 
+      <Switch location={ background || location }>
+
+        <ProtectedRoute onlyUnAuth={true} path='/login' exact={true}>
+          <LoginPage/>
+        </ProtectedRoute>
+
+        <ProtectedRoute onlyUnAuth={true} path='/register' exact={true}>
+          <RegisterPage/>
+        </ProtectedRoute>
+
+        <ProtectedRoute path='/profile' exact={true}>
+          <ProfilePage/>
+        </ProtectedRoute>
+
+        <ProtectedRoute path='/profile/orders' exact>
+          <ProfileOrderPage/>
+        </ProtectedRoute>
+
+        <ProtectedRoute onlyUnAuth={true} path='/forgot-password' exact={true}>
+          <ForgotPassPage/>
+        </ProtectedRoute>
+
+        <ProtectedRoute onlyUnAuth={true} path='/reset-password' exact={true}>
+          <ResetPassPage/>
+        </ProtectedRoute>
+        
+        <Route path='/ingredients/:id' exact>
+          <div className={style.ingredOwnPage}>
+            <p className="text text_type_main-large">Детали ингредиента</p>
+            <IngredientDetails />
           </div>
-        </main>)
+        </Route>
+
+        <Route path='/' exact={true}>
+          <AppMain/>  
+        </Route>
+
+        <Route>
+          <Error404Page/>
+        </Route>
+
+      </Switch>
+      { background && (
+        <>
+          <Route
+            path='/ingredients/:id'
+            exact
+            children={
+              <Modal onClose={modalClose} title='Детали ингредиента'>
+                <IngredientDetails />
+              </Modal>
+            }
+          />
+          <Route 
+            path='/feed/:number'
+            exact
+            children={
+              <Modal onClose={modalClose}>
+                <OrderDetails />
+              </Modal>
+            }
+          />
+        </>
+        )
       }
-      {!!order && !!isModalOpen && (
-            <Modal>
-                <OrderDetails/> 
-            </Modal>
-        )}
-      {!!selectedIngredient && !!isModalOpen && (
-            <Modal title='Детали ингредиента'>
-               <IngredientDetails ingredientData={selectedIngredient}/>
-            </Modal>
-        )}
     </div>
   );
 }

@@ -1,55 +1,35 @@
 import ReactDOM  from "react-dom"
-import { useEffect, useCallback } from "react"
+import { useEffect } from "react"
 import PropTypes from 'prop-types';
 
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components"
 
 import ModalOverlay from "../modal-overlay/modal-overlay"
 
-import style from '../modal/modal.module.css'
-import { useDispatch, useSelector } from "react-redux";
-import { CLOSE_MODAL, REMOVE_MODAL_INGREDIENT, RESET_ORDER } from "../../services/actions";
+import style from '../modal/modal.module.css';
 
 const modalRoot = document.getElementById('modal');
 
-const Modal = ({title, children}) => {
-
-    const dispatch = useDispatch();
-
-    const {order, selectedIngredient} = useSelector(store => ({
-        order: store.order.order,
-        selectedIngredient: store.modal.selectedIngredient
-    }))
-
-    const closeModal = useCallback(() => {
-        if (selectedIngredient !== null) {
-            dispatch({type: CLOSE_MODAL})
-            dispatch({type: REMOVE_MODAL_INGREDIENT})
-        } else if (order !== null) {
-            dispatch({type: CLOSE_MODAL})
-            dispatch({type: RESET_ORDER})
-        } else throw new Error('error with close modal')
-    },[dispatch, order, selectedIngredient])
+const Modal = ({onClose, title, children}) => {
     
-
     useEffect(() => {
         const handleEsc = (e) => {
-            e.key === 'Escape' && closeModal();
+            e.key === 'Escape' && onClose();
         };
-
+        
         document.addEventListener('keydown', handleEsc);
         return () => {
             document.removeEventListener('keydown', handleEsc); 
         }
-    }, [closeModal]);
+    }, [onClose]);
 
     return ReactDOM.createPortal(
         <>
-            <ModalOverlay onClick={closeModal}/>
+            <ModalOverlay onClick={onClose}/>
             <div className={`p-10 ${style.modal}`}>
                 <div className={style.header}>
                     <h3 className='text text_type_main-large'>{title}</h3>
-                    <CloseIcon type='primary' onClick={closeModal}/>
+                    <CloseIcon type='primary' onClick={onClose}/>
                 </div>
                 <div className={style.content}>
                     {children}
@@ -61,6 +41,7 @@ const Modal = ({title, children}) => {
 }
 
 Modal.propTypes = {
+    onClose: PropTypes.func.isRequired,
     title: PropTypes.string,
     children: PropTypes.element.isRequired
 }

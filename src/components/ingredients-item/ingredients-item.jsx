@@ -1,26 +1,28 @@
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import React from "react";
-import { useDispatch } from "react-redux";
 import {ingredientsPropsType} from '../../utils/prop-type';
 import style from '../ingredients-item/ingredients-item.module.css';
-import { ADD_MODAL_INGREDIENT, OPEN_MODAL } from "../../services/actions";
 import { useDrag } from "react-dnd";
+import { Link, useLocation } from "react-router-dom";
 
 const Ingredient = ({ ingredientData }) => {
-    const {image, price, name, __v} = ingredientData;
-    const dispatch = useDispatch();
-    const HandleClick = () => {
-        dispatch({type: ADD_MODAL_INGREDIENT, selectedIngredient: ingredientData})
-        dispatch({type: OPEN_MODAL})
-    }
+
+    const {image, price, name, __v, _id} = ingredientData;
+
+    const location = useLocation();
+
     const [, dragRef] = useDrag({
         type: 'ingredient',
         item: {...ingredientData}
     })
+
     return (
-        <article 
+        <Link 
             className={`mb-8 ${style.ingredient}`} 
-            onClick={HandleClick}
+            to={{
+                pathname: `/ingredients/${_id}`,
+                state: { background: location },
+            }}
             ref={dragRef}
             >
             {!!__v && <Counter count={__v} size="default"/>}
@@ -30,7 +32,7 @@ const Ingredient = ({ ingredientData }) => {
                 <CurrencyIcon type='primary'/>
             </div>
             <p className={`${style.text} text text_type_main-default`}>{name}</p>
-        </article>
+        </Link>
     )
 }
 

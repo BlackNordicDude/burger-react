@@ -3,18 +3,22 @@ import { ConstructorElement, CurrencyIcon, Button, DragIcon } from "@ya.praktiku
 import { getOrderNum } from "../../services/actions/order";
 import { useDispatch, useSelector } from "react-redux";
 import style from '../burger-constructor/burger-constructor.module.css';
-import { ADD_BUN, ADD_INNER, OPEN_MODAL, REMOVE_INNER, PLUS_COST, MINUS_COST, RESET_BUN_COST, SORT_INGREDIENTS, PLUS_V, MINUS_V } from "../../services/actions";
+import { ADD_BUN, ADD_INNER, REMOVE_INNER, PLUS_COST, MINUS_COST, RESET_BUN_COST, SORT_INGREDIENTS, PLUS_V, MINUS_V } from "../../services/actions";
 import { useDrop } from "react-dnd";
 import { v4 as uuidv4 } from 'uuid';
 import { InnerItem } from '../burger-constructor-inner/burger-constructor-inner';
+import { Link, useLocation } from "react-router-dom";
 
 const BurgerConstructor = () => {
-    
-    const { bun, inner, totalCost } = useSelector(store => {
+    const location = useLocation();
+
+    const { bun, inner, totalCost, number, user } = useSelector(store => {
         return ({
             bun: store.constructorState.constructorIngredient.bun,
             inner: store.constructorState.constructorIngredient.inner,
             totalCost: store.constructorState.totalCost,
+            number: store.order.order,
+            user: store.user.data,
         })
     })
     const dispatch = useDispatch();
@@ -26,13 +30,10 @@ const BurgerConstructor = () => {
     }
 
     const setOrder = () => {
-
         const arrOfIngredients = [];
         arrOfIngredients.push(bun._id);
         inner.map(el => arrOfIngredients.push(el._id));
-
         dispatch(getOrderNum(arrOfIngredients))
-        dispatch({type: OPEN_MODAL})
     }
 
     const onDropHandler = (item) => {
@@ -95,7 +96,8 @@ const BurgerConstructor = () => {
                 className={style.constructor_list}
                 ref={dropConRef}
                 >
-             { !!bun && <div className={style.buns}>
+             { !!bun ? 
+                <div className={style.buns}>
                     <ConstructorElement
                         type="top"
                         isLocked={true}
@@ -103,12 +105,23 @@ const BurgerConstructor = () => {
                         price={bun.price}
                         thumbnail={bun.image_mobile}
                     />
-                </div> }
-                { inner.length !== 0 && 
+                </div> 
+                : 
+                <div className={style.buns}>
+                    <div className={style.bun_none}>
+                        <p className="text text_type_main-default">Добавьте булку</p>
+                    </div>
+                </div>}
+                { inner.length !== 0 ? 
                 <div className={`pr-1 ${style.in_burger}`}>
                     {inner.map((el, indx) => renderInner(el, indx))}
+                </div> 
+                :
+                <div className={style.inner_none}>
+                    <p className="text text_type_main-default">Добавьте начинку</p> 
                 </div>}
-                { !!bun && <div className={style.buns}>
+                { !!bun ?
+                <div className={style.buns}>
                     <ConstructorElement
                         type="bottom"
                         isLocked={true}
@@ -116,14 +129,47 @@ const BurgerConstructor = () => {
                         price={bun.price}
                         thumbnail={bun.image_mobile}
                     />
+                </div>  
+                :
+                <div className={style.buns}>
+                    <div className={style.bun_none}>
+                        <p className="text text_type_main-default">Добавьте булку</p>
+                    </div>
                 </div> }
             </ul>
             <div className={`mt-10 ${style.ready}`}>
                 <div className={`mr-10 ${style.total_price}`}>
                     <p className="text text_type_digits-medium">{totalCost}</p>  
                     <CurrencyIcon type='primary'/>
-                </div>
-                <Button onClick={setOrder}>Оформите заказ</Button>  
+                </div> 
+                { !!bun ? user ? 
+                    
+                        <Link 
+                        className={style.order_link}
+                        to={{
+                            pathname: `/feed/${number}`,
+                            state: { background: location },
+                        }}>
+                            <Button onClick={setOrder}>
+                                Оформите заказ
+                            </Button>
+                        </Link> 
+                      : 
+                   
+                        <Link 
+                        className={style.order_link}
+                        to={{
+                            pathname: `/login`
+                        }}> 
+                            <Button>
+                                Оформите заказ 
+                            </Button>
+                        </Link> 
+                   :
+                    <Button disabled={true}>
+                        Оформите заказ
+                    </Button>
+                }                
             </div>
         </section>
     )

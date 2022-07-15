@@ -3,13 +3,16 @@ import {
     LOAD_INGREDIENTS_FAILED,
     LOAD_INGREDIENTS_SUCCESS,
     PLUS_V,
-    MINUS_V
+    MINUS_V,
+    RESET_V,
+    ADD_MODAL_INGREDIENT,
 } from '../actions/index'
 
 const initialState = {
     ingredients: [],
     ingredientsError: false,
-    ingredientsRequest: false
+    ingredientsRequest: false,
+    selectedIngredient: null
 }
 
 export const ingredientsReducer = (state = initialState, action) => {
@@ -66,6 +69,18 @@ export const ingredientsReducer = (state = initialState, action) => {
                             }
                         }
                     })
+            }
+        }
+        case RESET_V: {
+            return {
+                ...state,
+                ingredients: state.ingredients.map(el => {return {...el, __v: 0}})
+            }
+        }
+        case ADD_MODAL_INGREDIENT: {
+            return {
+                ...state,
+                selectedIngredient: action.payload
             }
         }
         default: return state

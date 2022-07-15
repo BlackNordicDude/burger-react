@@ -3,9 +3,17 @@
     max-width: 1280px;
 }
 
-.sections {
-    display: flex;
-    justify-content: space-between;
+.ingredOwnPage {
+    color: #ffffff;
+}
+
+.ingredOwnPage > p {
+    text-align: center;
+}
+
+.ingredOwnPage > img {
+    display: block;
+    margin: 0 auto;
 }
 
 ::-webkit-scrollbar {
