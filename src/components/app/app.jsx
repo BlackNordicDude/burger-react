@@ -48,7 +48,7 @@ function App() {
           <RegisterPage/>
         </ProtectedRoute>
 
-        <ProtectedRoute path='/profile' xact={true}>
+        <ProtectedRoute path='/profile' exact={true}>
           <ProfilePage/>
         </ProtectedRoute>
 

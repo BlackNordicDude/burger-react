@@ -34,14 +34,11 @@ export function checkUserAuth() {
                 })
             })
             .finally(() => {
-                console.log('authTrue');
                 dispatch({type: AUTH_CHECKED});
             })
         } else {
             dispatch({type: AUTH_CHECKED});
-        }
-        
-        dispatch({type: AUTH_CHECKED})
+        }         
     }
 }
 
@@ -56,7 +53,8 @@ export function login(data) {
             })
         })
         .catch(err => dispatch({
-            type: LOGIN_USER_ERROR
+            type: LOGIN_USER_ERROR,
+            err: err
         }))
     }
 }

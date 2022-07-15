@@ -38,7 +38,7 @@ export const userReducer = (state = initialState, action) => {
         case AUTH_CHECKED: {
             return {
                 ...state,
-                isAuthChecked: true
+                isAuthChecked: true,
             }
         }
         case USER_LOGOUT: {
@@ -88,7 +88,7 @@ export const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loginUserRequest: false,
-                loginUserError: true
+                loginUserError: action.err
             }
         }
         case GET_USER_REQUEST: {

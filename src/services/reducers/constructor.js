@@ -5,7 +5,8 @@ import {
     MINUS_COST,
     REMOVE_INNER,
     RESET_BUN_COST,
-    SORT_INGREDIENTS
+    SORT_INGREDIENTS,
+    RESET_CONSRUCTOR
 } from '../actions/index';
 
 const initialState = {
@@ -69,6 +70,16 @@ export const constructorReducer = (state = initialState, action) => {
                 constructorIngredient: {
                     ...state.constructorIngredient,
                     inner: [...action.payload]
+                }
+            }
+        }
+        case RESET_CONSRUCTOR: {
+            return {
+                ...state,
+                totalCost: 0,
+                constructorIngredient: {
+                    bun: null,
+                    inner: []
                 }
             }
         }

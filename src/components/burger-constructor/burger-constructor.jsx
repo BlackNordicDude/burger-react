@@ -96,7 +96,8 @@ const BurgerConstructor = () => {
                 className={style.constructor_list}
                 ref={dropConRef}
                 >
-             { !!bun && <div className={style.buns}>
+             { !!bun ? 
+                <div className={style.buns}>
                     <ConstructorElement
                         type="top"
                         isLocked={true}
@@ -104,12 +105,23 @@ const BurgerConstructor = () => {
                         price={bun.price}
                         thumbnail={bun.image_mobile}
                     />
-                </div> }
-                { inner.length !== 0 && 
+                </div> 
+                : 
+                <div className={style.buns}>
+                    <div className={style.bun_none}>
+                        <p className="text text_type_main-default">Добавьте булку</p>
+                    </div>
+                </div>}
+                { inner.length !== 0 ? 
                 <div className={`pr-1 ${style.in_burger}`}>
                     {inner.map((el, indx) => renderInner(el, indx))}
+                </div> 
+                :
+                <div className={style.inner_none}>
+                    <p className="text text_type_main-default">Добавьте начинку</p> 
                 </div>}
-                { !!bun && <div className={style.buns}>
+                { !!bun ?
+                <div className={style.buns}>
                     <ConstructorElement
                         type="bottom"
                         isLocked={true}
@@ -117,6 +129,12 @@ const BurgerConstructor = () => {
                         price={bun.price}
                         thumbnail={bun.image_mobile}
                     />
+                </div>  
+                :
+                <div className={style.buns}>
+                    <div className={style.bun_none}>
+                        <p className="text text_type_main-default">Добавьте булку</p>
+                    </div>
                 </div> }
             </ul>
             <div className={`mt-10 ${style.ready}`}>
@@ -124,8 +142,7 @@ const BurgerConstructor = () => {
                     <p className="text text_type_digits-medium">{totalCost}</p>  
                     <CurrencyIcon type='primary'/>
                 </div> 
-                {
-                    user ? 
+                { !!bun ? user ? 
                     
                         <Link 
                         className={style.order_link}
@@ -148,7 +165,10 @@ const BurgerConstructor = () => {
                                 Оформите заказ 
                             </Button>
                         </Link> 
-                   
+                   :
+                    <Button disabled={true}>
+                        Оформите заказ
+                    </Button>
                 }                
             </div>
         </section>

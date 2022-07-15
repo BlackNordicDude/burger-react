@@ -1,21 +1,17 @@
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { useForm } from "../../hooks/useForm";
 import { login } from "../../services/actions/user";
 import style from '../login/login.module.css'
 
 const LoginPage = ( ) => {
     const dispatch = useDispatch();
-    const [form, setValue] = useState({email: '', password: ''});
-
-    const onChange = (e) => {
-        setValue({ ...form, [e.target.name]: e.target.value })
-    }
-
+    const {values, handleChange} = useForm({email: '', password: ''})
+    
     const submitForm = (e) => {
         e.preventDefault();
-        dispatch(login(form));
+        dispatch(login(values));
     }
 
     return (
@@ -24,19 +20,19 @@ const LoginPage = ( ) => {
             <form className={style.form} onSubmit = {submitForm}>
                 <div className="mb-6">
                 <Input
-                    value={form.email}
-                    onChange={onChange}
+                    value={values.email}
+                    onChange={handleChange}
                     type={'email'}
-                    name={'email'}
+                    name='email'
                     placeholder={"E-mail"}
                     />  
                 </div>
                 <div className="mb-6">
                 <Input
-                    value={form.password}
-                    onChange={onChange}
+                    value={values.password}
+                    onChange={handleChange}
                     type={'password'}
-                    name={'password'}
+                    name='password'
                     placeholder={'Пароль'}
                     />  
                 </div>               
@@ -55,11 +51,3 @@ const LoginPage = ( ) => {
 }
 
 export default LoginPage;
-
-
-/* настроить хранение access и refresh токенов, 
-перекрасить названия ингредиентов, 
-починить открытие ингредиента после обновления страницы,
-настроить время жизни access токена, 
-настроить выход из системы, 
-*/

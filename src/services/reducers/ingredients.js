@@ -4,6 +4,7 @@ import {
     LOAD_INGREDIENTS_SUCCESS,
     PLUS_V,
     MINUS_V,
+    RESET_V,
     ADD_MODAL_INGREDIENT,
 } from '../actions/index'
 
@@ -68,6 +69,12 @@ export const ingredientsReducer = (state = initialState, action) => {
                             }
                         }
                     })
+            }
+        }
+        case RESET_V: {
+            return {
+                ...state,
+                ingredients: state.ingredients.map(el => {return {...el, __v: 0}})
             }
         }
         case ADD_MODAL_INGREDIENT: {

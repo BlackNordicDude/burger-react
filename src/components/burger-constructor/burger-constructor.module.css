@@ -43,3 +43,12 @@
     text-decoration: none;
     color: #ffffff;
 }
+
+.bun_none {
+    text-align: center;
+}
+
+.inner_none {
+    text-align: center;
+    margin-left: 32px;
+}

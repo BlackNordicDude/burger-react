@@ -6,6 +6,10 @@ const checkRes = (res) => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err))
 }
 
+const checkSuccess = (data) => {
+    return data.success ? data : Promise.reject(data)
+} 
+
 export const refreshToken = () => {
     return fetch(`${BURGER_API_URL}/auth/token`,{ 
         method: 'POST',
@@ -44,10 +48,8 @@ export const getIngredients = () => {
     console.log('getIngred');
     return fetch(`${BURGER_API_URL}/ingredients`)
     .then(checkRes)
-    .then((data) => {
-        if (data.success) return data.data;
-        return Promise.reject(data)
-    })
+    .then(checkSuccess)
+    .then(data => data.data)
 }
 
 export const getOrder = (data) => {
@@ -63,10 +65,7 @@ export const getOrder = (data) => {
         body:  JSON.stringify({ingredients: data})
     })
     .then(checkRes)
-    .then((data) => {
-        if (data.success) return data;
-        return Promise.reject(data)
-    })
+    .then(checkSuccess)
 }
 
 export const registerUser = data => {
@@ -78,14 +77,11 @@ export const registerUser = data => {
         body: JSON.stringify(data)
     })
     .then(checkRes)
-    .then(data => {
-        if (data.success) {
-            localStorage.setItem('refreshToken', data.refreshToken);
-            setCookie('accessToken', data.accessToken, {expires: 1200});
-            return data
-        };
-        return Promise.reject(data)
-    })
+    .then(checkSuccess)
+    .then((data) => {
+        localStorage.setItem('refreshToken', data.refreshToken);
+        setCookie('accessToken', data.accessToken, {expires: 1200});
+    })  
 }
 
 export const loginUser = data => {
@@ -97,14 +93,12 @@ export const loginUser = data => {
         body: JSON.stringify(data)
     })
     .then(checkRes)
-    .then(data => {
-        if (data.success) {
-            localStorage.setItem('refreshToken', data.refreshToken);
-            setCookie('accessToken', data.accessToken, {expires: 1200});
-            return data
-        };
-        return Promise.reject(data)
-    })
+    .then(checkSuccess)
+    .then((data) => {
+        localStorage.setItem('refreshToken', data.refreshToken);
+        setCookie('accessToken', data.accessToken, {expires: 1200});
+        return data
+    })  
 }
 
 export const forgotPassword = data => {
@@ -116,10 +110,7 @@ export const forgotPassword = data => {
         body: JSON.stringify(data)
     })
     .then(checkRes)
-    .then(data => {
-        if (data.success) return data;
-        return Promise.reject(data)
-    })
+    .then(checkSuccess)
 }
 
 export const resetPassword = data => {
@@ -131,10 +122,7 @@ export const resetPassword = data => {
         body: JSON.stringify(data)
     })
     .then(checkRes)
-    .then(data => {
-        if (data.success) return data;
-        return Promise.reject(data)
-    })
+    .then(checkSuccess)
 }
 
 export const getUser = () => {

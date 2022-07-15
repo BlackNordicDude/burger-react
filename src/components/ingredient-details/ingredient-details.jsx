@@ -1,16 +1,9 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getIngredientsData } from '../../services/actions/ingredients';
 import style from '../ingredient-details/ingredient-details.module.css'
 
 
 const IngredientDetails = () => {
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(getIngredientsData())
-    },[dispatch])
     
     const { id } = useParams();
     const {ingredients} = useSelector(store => ({

@@ -38,7 +38,9 @@ const AppHeader = () => {
                 </NavLink>
                 </div>
             <div className={style.logo}>
-                <Logo/>
+                <NavLink to='/'>
+                    <Logo/>
+                </NavLink>
             </div>
             <NavLink 
             to="/profile" 

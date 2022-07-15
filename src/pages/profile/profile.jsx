@@ -2,8 +2,9 @@ import { NavLink } from "react-router-dom";
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import style from '../profile/profile.module.css'
 import { updateUserData, logoutUser } from "../../services/actions/user";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "../../hooks/useForm";
 
 const ProfilePage = () => {
     const dispatch = useDispatch();
@@ -15,14 +16,10 @@ const ProfilePage = () => {
 
     let pass = '*********'
 
-    const [userData, setUserData] = useState({
-        name: nameR,
-        email: emailR,
-        pass: pass
-    })
+    const {values, handleChange, setValues} = useForm({name: nameR, pass: pass, email: emailR})
 
     const cancelChange = () => {
-        setUserData({
+        setValues({
             name: nameR,
             email: emailR,
             pass: pass
@@ -30,17 +27,17 @@ const ProfilePage = () => {
     }
 
     useEffect(() => {
-        setUserData({
+        setValues({
             name: nameR,
             email: emailR,
             pass: pass
         })
-    }, [nameR, emailR, pass])
+    }, [nameR, emailR, pass, setValues])
 
     const update = () => {
-        console.log('update', userData);
+        console.log('update', values);
 
-        dispatch(updateUserData(userData))
+        dispatch(updateUserData(values))
     } 
 
     const logout = () => {
@@ -78,36 +75,30 @@ const ProfilePage = () => {
                     В этом разделе вы можете изменить свои персональные данные
                 </p>
             </div>
-            <div className={style.inputs}>
+            <form className={style.inputs}>
                 <div className={`mb-6 ${style.tab}`}>
                     <Input
-                    value={userData.name}
-                    onChange={e => setUserData({
-                        ...userData,
-                        name: e.target.value
-                    })}
+                    value={values.name}
+                    name='name'
+                    onChange={handleChange}
                     type="text"
                     placeholder='имя'
                     icon="EditIcon"/>
                 </div>
                 <div className={`mb-6 ${style.tab}`}>
                     <Input
-                    value={userData.email}
-                    onChange={e => setUserData({
-                        ...userData,
-                        email: e.target.value
-                    })}
+                    value={values.email}
+                    name='email'
+                    onChange={handleChange}
                     type="email"
                     placeholder="login"
                     icon="EditIcon"/>
                 </div>
                 <div className={style.tab}>
                     <Input
-                    value={userData.pass}
-                    onChange={e => setUserData({
-                        ...userData,
-                        pass: e.target.value
-                    })}
+                    value={values.pass}
+                    name='pass'
+                    onChange={handleChange}
                     type="password"
                     placeholder="pass"
                     icon="EditIcon"/> 
@@ -120,7 +111,7 @@ const ProfilePage = () => {
                     </Button>
                     <Button onClick={update}>Сохранить</Button>
                 </div>
-            </div>
+            </form>
         </div>
     )
 }
