@@ -161,7 +161,7 @@ const BurgerConstructor = () => {
                         to={{
                             pathname: `/login`
                         }}> 
-                            <Button onClick={setOrder}>
+                            <Button>
                                 Оформите заказ 
                             </Button>
                         </Link> 
