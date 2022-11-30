@@ -1,4 +1,5 @@
 import { ReactNode } from "react"
+import { Location } from 'history'
 
 export type TUser = {
     name? : string,
@@ -53,3 +54,7 @@ export type TModal = {
 export type TLocationState = {
     from: string
 }
+
+export type TLocation = {
+    background: Location,
+  };

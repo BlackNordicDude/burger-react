@@ -6,7 +6,7 @@ const checkRes = (res: Response) => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err))
 }
 
-const checkSuccess = (data: any) => {
+const checkSuccess = (data: Record<string, any>) => {
     return data.success ? data : Promise.reject(data)
 } 
 

@@ -18,12 +18,12 @@ import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import style from './app.module.css';
 import { checkUserAuth } from '../../services/actions/user';
+import { TLocation } from '../../utils/types';
 
 function App() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation();
-  // @ts-ignore: Unreachable code error ?????????????????????????????
+  const location = useLocation<TLocation>();
   const background = location.state && location.state.background;
 
   const modalClose = () => history.goBack();
