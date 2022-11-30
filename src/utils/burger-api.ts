@@ -1,12 +1,12 @@
-import { getCookie, setCookie } from "./cookie";
-
+import { getCookie, setCookie } from "typescript-cookie";
+import { TUser } from "./types";
 const BURGER_API_URL = 'https:/norma.nomoreparties.space/api';
 
-const checkRes = (res) => {
+const checkRes = (res: Response) => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err))
 }
 
-const checkSuccess = (data) => {
+const checkSuccess = (data: any) => {
     return data.success ? data : Promise.reject(data)
 } 
 
@@ -22,11 +22,11 @@ export const refreshToken = () => {
     }).then(checkRes)
 }
 
-export const fetchWithRefresh = async (url, options) => {
+export const fetchWithRefresh = async (url: string, options: any) => {
     try {
         const res = await fetch(url, options);
         return await checkRes(res)
-    } catch (err) {
+    } catch (err: any) {
         if (err.message === 'jwt expired') {
             const refreshData = await refreshToken();
             if (!refreshData.success) {
@@ -34,7 +34,7 @@ export const fetchWithRefresh = async (url, options) => {
             }
             console.log('fetchWithRefresh');
             localStorage.setItem('refreshToken', refreshData.refreshToken);
-            setCookie('accessToken', refreshData.accessToken, {expires: 1200});
+            setCookie('accessToken', refreshData.accessToken, {expires: 1/48});
             options.headers.authorization = refreshData.accessToken;
             const res = await fetch(url, options);
             return await checkRes(res);
@@ -52,12 +52,14 @@ export const getIngredients = () => {
     .then(data => data.data)
 }
 
-export const getOrder = (data) => {
+export const getOrder = (data: Array<string>) => {    
     return fetch(`${BURGER_API_URL}/orders`, {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
+    // @ts-ignore: Unreachable code error
+
         headers: {
             'Content-Type': 'application/json',
             authorization: getCookie('accessToken')
@@ -68,7 +70,8 @@ export const getOrder = (data) => {
     .then(checkSuccess)
 }
 
-export const registerUser = data => {
+export const registerUser = (data: TUser) => {
+    
     return fetch(`${BURGER_API_URL}/auth/register`,{ 
         method: 'POST',
         headers: {
@@ -80,11 +83,12 @@ export const registerUser = data => {
     .then(checkSuccess)
     .then((data) => {
         localStorage.setItem('refreshToken', data.refreshToken);
-        setCookie('accessToken', data.accessToken, {expires: 1200});
+        setCookie('accessToken', data.accessToken, {expires: 1/48});
     })  
 }
 
-export const loginUser = data => {
+export const loginUser = (data: TUser) => {
+    console.log(data);
     return fetch(`${BURGER_API_URL}/auth/login`,{ 
         method: 'POST',
         headers: {
@@ -96,12 +100,13 @@ export const loginUser = data => {
     .then(checkSuccess)
     .then((data) => {
         localStorage.setItem('refreshToken', data.refreshToken);
-        setCookie('accessToken', data.accessToken, {expires: 1200});
+        setCookie('accessToken', data.accessToken, {expires: 1/48});
         return data
     })  
 }
 
-export const forgotPassword = data => {
+export const forgotPassword = (data: TUser) => {
+    console.log(data);
     return fetch(`${BURGER_API_URL}/password-reset`,{ 
         method: 'POST',
         headers: {
@@ -113,7 +118,8 @@ export const forgotPassword = data => {
     .then(checkSuccess)
 }
 
-export const resetPassword = data => {
+export const resetPassword = (data: TUser) => {
+    console.log(data);
     return fetch(`${BURGER_API_URL}/password-reset/reset`,{ 
         method: 'POST',
         headers: {
@@ -139,7 +145,8 @@ export const getUser = () => {
     })
 }
 
-export const updateUser = (user) => {
+export const updateUser = (user: TUser) => {
+    console.log(user);
     return fetchWithRefresh(`${BURGER_API_URL}/auth/user`, {
         method: 'PATCH',
         headers: {

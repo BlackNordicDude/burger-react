@@ -1,16 +1,17 @@
 import { Logo } from "@ya.praktikum/react-developer-burger-ui-components";
 import { BurgerIcon, ProfileIcon, ListIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { FC } from "react";
 import { useSelector } from "react-redux";
 import { NavLink, useRouteMatch } from "react-router-dom";
 
 import style from '../app-header/app-header.module.css';
 
-const AppHeader = () => {
+const AppHeader:FC = () => {
 
     const isConst = !!useRouteMatch({path: '/', exact: true})
     const isFeed = !!useRouteMatch('/feed')
     const isProfile = !!useRouteMatch('/profile')
-
+  // @ts-ignore: Unreachable code error
     const username = useSelector((store) => store.user.data?.name) 
 
     return (

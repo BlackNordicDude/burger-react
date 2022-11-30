@@ -1,11 +1,14 @@
 import { useSelector } from "react-redux"
 import { Route, Redirect, useLocation } from "react-router-dom";
 import { Preloader } from "../preloader/preloader";
+import { TLocationState } from "../../utils/types";
 
 const ProtectedRoute = ({onlyUnAuth = false, ...rest}) => {
+      // @ts-ignore: Unreachable code error
     const isAuthChecked = useSelector(state => state.user.isAuthChecked);
+      // @ts-ignore: Unreachable code error
     const user = useSelector(state => state.user.data);
-    const location = useLocation();
+    const location = useLocation<TLocationState>();
 
     if (!isAuthChecked) {
         return <Preloader />;

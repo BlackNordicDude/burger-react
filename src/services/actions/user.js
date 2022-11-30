@@ -21,7 +21,7 @@ import {
     updateUser,
     logout,
  } from "../../utils/burger-api";
-import { deleteCookie, getCookie } from "../../utils/cookie";
+import { getCookie, removeCookie as deleteCookie } from "typescript-cookie";
 
 export function checkUserAuth() {
     return function(dispatch) {

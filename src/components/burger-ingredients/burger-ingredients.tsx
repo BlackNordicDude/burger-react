@@ -1,40 +1,44 @@
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, FC } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientCategory from '../ingredients-list/ingredients-list';
 import style from '../burger-ingredients/burger-ingredients.module.css';
 import { useDispatch, useSelector } from "react-redux";
-import { CHANGE_TAB } from '../../services/actions/index'
+import { CHANGE_TAB } from '../../services/actions/index';
 import { Link, Element } from 'react-scroll';
+import { TIngredient } from "../../utils/types";
 
-const BurgerIngredients = () => {
+
+const BurgerIngredients: FC = () => {
 
     const { ingredients, currentTab } = useSelector(store => {
         return ({
+              // @ts-ignore: Unreachable code error
             ingredients: store.ingredients.ingredients,
+              // @ts-ignore: Unreachable code error
             currentTab: store.tab.currentTab
         })
     })
     const dispatch = useDispatch();
 
-    const scrollRef = useRef(null);
-    const bunRef = useRef(null);
-    const sauceRef = useRef(null);
-    const mainRef = useRef(null);                          
+    const scrollRef = useRef<HTMLUListElement>(null);
+    const bunRef = useRef<HTMLDivElement>(null);
+    const sauceRef = useRef<HTMLDivElement>(null);
+    const mainRef = useRef<HTMLDivElement>(null);                          
 
-    const buns = useMemo(() => ingredients.filter(el => el.type === 'bun'),[ingredients]) 
-    const sauces = useMemo(() => ingredients.filter(el => el.type === 'sauce'),[ingredients]) 
-    const main = useMemo(() => ingredients.filter(el => el.type === 'main'),[ingredients]) 
+    const buns = useMemo(() => ingredients.filter((el: TIngredient) => el.type === 'bun'),[ingredients]) 
+    const sauces = useMemo(() => ingredients.filter((el: TIngredient) => el.type === 'sauce'),[ingredients]) 
+    const main = useMemo(() => ingredients.filter((el: TIngredient) => el.type === 'main'),[ingredients]) 
     
-    const setCurrentTab = (tab) => {
+    const setCurrentTab = (tab: string) => {
         dispatch({type: CHANGE_TAB, tab: tab}) 
     }
 
     const handleScroll = () => {
-        const scrollBlockPos = scrollRef.current.getBoundingClientRect().top;
+        const scrollBlockPos = scrollRef.current !== null ? scrollRef.current.getBoundingClientRect().top : 0;
 
-        const bunHeaderPos = bunRef.current.getBoundingClientRect().top;
-        const sauceHeaderPos = sauceRef.current.getBoundingClientRect().top;
-        const mainHeaderPos = mainRef.current.getBoundingClientRect().top;
+        const bunHeaderPos = bunRef.current !== null ? bunRef.current.getBoundingClientRect().top : 0;
+        const sauceHeaderPos = sauceRef.current !== null ? sauceRef.current.getBoundingClientRect().top : 0;
+        const mainHeaderPos = mainRef.current !== null ? mainRef.current.getBoundingClientRect().top : 0;
 
         const bunsDif = Math.abs(scrollBlockPos - bunHeaderPos);
         const saucesDif = Math.abs(scrollBlockPos - sauceHeaderPos);

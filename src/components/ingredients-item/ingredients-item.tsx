@@ -1,11 +1,11 @@
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
-import {ingredientsPropsType} from '../../utils/prop-type';
+import React, { FC } from "react";
 import style from '../ingredients-item/ingredients-item.module.css';
 import { useDrag } from "react-dnd";
 import { Link, useLocation } from "react-router-dom";
+import { PropsIngredItem } from "../../utils/types";
 
-const Ingredient = ({ ingredientData }) => {
+const Ingredient: FC<PropsIngredItem> = ({ ingredientData }) => {
 
     const {image, price, name, __v, _id} = ingredientData;
 
@@ -35,9 +35,5 @@ const Ingredient = ({ ingredientData }) => {
         </Link>
     )
 }
-
-Ingredient.propTypes = {
-    ingredientData: ingredientsPropsType.isRequired,
-};
 
 export default React.memo(Ingredient);

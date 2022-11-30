@@ -3,13 +3,14 @@ import { Link, useHistory } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
 import { forgotPassword } from '../../utils/burger-api';
 import style from '../forgot-password/forgot-password.module.css';
+import { FC, FormEvent } from 'react';
 
-const ForgotPassPage = ( ) => {
+const ForgotPassPage: FC = ( ) => {
 
     const history = useHistory();
     const {values, handleChange, setValues} = useForm({email: ''})
 
-    const onSubmit = (e) => {
+    const onSubmit = (e: FormEvent) => {
         e.preventDefault();
        forgotPassword(values)
        .then(res => {
@@ -28,10 +29,10 @@ const ForgotPassPage = ( ) => {
                 <Input
                     name='email'
                     onChange={handleChange}
-                    value={values.email}
+                    value={values.email || ''}
                     placeholder='Укажите e-mail'/>
                 <div className='mt-6'>
-                    <Button>
+                    <Button htmlType='submit'>
                         Восстановить
                     </Button>
                 </div>

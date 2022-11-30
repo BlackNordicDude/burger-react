@@ -1,7 +1,7 @@
 import style from '../modal-overlay/modal-overlay.module.css';
-import PropTypes from 'prop-types';
+import { FC } from 'react';
 
-const ModalOverlay = ({onClick}) => {
+const ModalOverlay: FC<{onClick: () => void}> = ({onClick}) => {
 
     return (
         <div className={style.overlay} onClick={onClick}>
@@ -10,7 +10,4 @@ const ModalOverlay = ({onClick}) => {
     )
 }
 
-ModalOverlay.propTypes = {
-    onClick: PropTypes.func.isRequired
-}
 export default ModalOverlay;
