@@ -1,10 +1,11 @@
-import { useDrag, useDrop } from "react-dnd";
-import { useRef } from "react";
-import PropTypes from 'prop-types';
+import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";
+import { FC, useRef } from "react";
 import style from '../burger-constructor/burger-constructor.module.css';
+import { IPropsInnerItem } from "../../utils/types";
+ 
 
-export const InnerItem = ({ children, index, moveItem }) => {
-    const ref = useRef(null);
+export const InnerItem: FC<IPropsInnerItem> = ({ children, index, moveItem }) => {
+    const ref = useRef<HTMLDivElement>(null);
     const [{ isDragging }, drag] = useDrag({
         type: 'sort-item',
         item: () => {
@@ -16,7 +17,7 @@ export const InnerItem = ({ children, index, moveItem }) => {
     })
     const [, drop] = useDrop({
         accept: 'sort-item',
-        hover(item, monitor) {
+        hover(item: any, monitor: DropTargetMonitor) {
         if (!ref.current) {
             return
         }
@@ -29,7 +30,7 @@ export const InnerItem = ({ children, index, moveItem }) => {
         const hoverMiddleY =
             (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
         const clientOffset = monitor.getClientOffset()
-        const hoverClientY = clientOffset.y - hoverBoundingRect.top
+        const hoverClientY = clientOffset !== null ? clientOffset.y - hoverBoundingRect.top : 0
         if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
             return
         }
@@ -48,9 +49,3 @@ export const InnerItem = ({ children, index, moveItem }) => {
         </div>
     )
 }
-
-InnerItem.propTypes = {
-    children: PropTypes.node.isRequired,
-    index: PropTypes.number.isRequired,
-    moveItem: PropTypes.func.isRequired
-};

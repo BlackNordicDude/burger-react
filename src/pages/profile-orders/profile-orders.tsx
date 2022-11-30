@@ -1,4 +1,6 @@
-const ProfileOrderPage = () => {
+import { FC } from "react";
+
+const ProfileOrderPage: FC = () => {
     return (
         <div>
             ProfileOrder

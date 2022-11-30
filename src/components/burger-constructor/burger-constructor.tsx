@@ -1,4 +1,4 @@
-import React from "react";  
+import React, { FC, ReactNode } from "react";  
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { getOrderNum } from "../../services/actions/order";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,22 +8,29 @@ import { useDrop } from "react-dnd";
 import { v4 as uuidv4 } from 'uuid';
 import { InnerItem } from '../burger-constructor-inner/burger-constructor-inner';
 import { Link, useLocation } from "react-router-dom";
+import { TIngredient } from "../../utils/types";
 
-const BurgerConstructor = () => {
+
+const BurgerConstructor: FC<{}> = () => {
     const location = useLocation();
 
     const { bun, inner, totalCost, number, user } = useSelector(store => {
         return ({
+            // @ts-ignore: Unreachable code error
             bun: store.constructorState.constructorIngredient.bun,
+            // @ts-ignore: Unreachable code error
             inner: store.constructorState.constructorIngredient.inner,
+            // @ts-ignore: Unreachable code error
             totalCost: store.constructorState.totalCost,
+            // @ts-ignore: Unreachable code error
             number: store.order.order,
+            // @ts-ignore: Unreachable code error
             user: store.user.data,
         })
     })
     const dispatch = useDispatch();
 
-    const removeIngredient = (item) => {
+    const removeIngredient = (item: TIngredient) => {
         dispatch({type: MINUS_V, id: item._id})
         dispatch({type: REMOVE_INNER, payload: item})
         dispatch({type: MINUS_COST, payload: item.price})
@@ -32,11 +39,12 @@ const BurgerConstructor = () => {
     const setOrder = () => {
         const arrOfIngredients = [];
         arrOfIngredients.push(bun._id);
-        inner.map(el => arrOfIngredients.push(el._id));
+        inner.map((el: TIngredient) => arrOfIngredients.push(el._id));
+        // @ts-ignore: Unreachable code error
         dispatch(getOrderNum(arrOfIngredients))
     }
 
-    const onDropHandler = (item) => {
+    const onDropHandler = (item: TIngredient) => {
         dispatch({type: PLUS_V, id: item._id})
         const cloneItem = {...item};
         cloneItem.uid = uuidv4();
@@ -58,12 +66,12 @@ const BurgerConstructor = () => {
 
     const [, dropConRef] = useDrop({
         accept: 'ingredient',
-        drop(item) {
+        drop(item: TIngredient) {
             onDropHandler(item)
         }
     })
 
-    const moveItem = (dragIndex, hoverIndex) => {
+    const moveItem = (dragIndex: number, hoverIndex: number) => {
         const dragIng = inner[dragIndex];
         const newArr = [...inner];
         newArr.splice(dragIndex, 1);
@@ -72,7 +80,7 @@ const BurgerConstructor = () => {
         dispatch({type: SORT_INGREDIENTS, payload: newArr})
     }
 
-    const renderInner = (el, indx) => {
+    const renderInner = (el: TIngredient, indx: number): ReactNode => {
         return (
             <InnerItem
                 className={style.in_burger_elem}
@@ -91,7 +99,7 @@ const BurgerConstructor = () => {
         )
     }
     return ( 
-        <section className={style.constructor}>
+        <section className={`${style.constructor}`}>
              <ul 
                 className={style.constructor_list}
                 ref={dropConRef}
@@ -114,7 +122,7 @@ const BurgerConstructor = () => {
                 </div>}
                 { inner.length !== 0 ? 
                 <div className={`pr-1 ${style.in_burger}`}>
-                    {inner.map((el, indx) => renderInner(el, indx))}
+                    {inner.map((el: TIngredient, indx: number) => renderInner(el, indx))}
                 </div> 
                 :
                 <div className={style.inner_none}>
@@ -150,7 +158,7 @@ const BurgerConstructor = () => {
                             pathname: `/feed/${number}`,
                             state: { background: location },
                         }}>
-                            <Button onClick={setOrder}>
+                            <Button onClick={setOrder} htmlType={'button'}>
                                 Оформите заказ
                             </Button>
                         </Link> 
@@ -161,12 +169,12 @@ const BurgerConstructor = () => {
                         to={{
                             pathname: `/login`
                         }}> 
-                            <Button>
+                            <Button htmlType={'button'}>
                                 Оформите заказ 
                             </Button>
                         </Link> 
                    :
-                    <Button disabled={true}>
+                    <Button disabled={true} htmlType={'button'}>
                         Оформите заказ
                     </Button>
                 }                

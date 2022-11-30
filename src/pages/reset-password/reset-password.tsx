@@ -3,12 +3,13 @@ import { Link, useHistory } from "react-router-dom";
 import style from '../reset-password/reset-password.module.css'
 import { resetPassword } from "../../utils/burger-api";
 import { useForm } from "../../hooks/useForm";
+import { FC, FormEvent } from "react";
 
-const ResetPassPage = () => {
+const ResetPassPage: FC = () => {
     const history = useHistory();
     const {values, handleChange} = useForm({password: '', token: ''})
 
-    const onSubmit = (e) => {
+    const onSubmit = (e: FormEvent) => {
         e.preventDefault();
         resetPassword(values)
         .then(res => {
@@ -23,20 +24,20 @@ const ResetPassPage = () => {
                 <Input
                     name="password"
                     onChange={handleChange}
-                    value={values.password}
+                    value={values.password || ''}
                     placeholder='Новый пароль'
                     />
                 <div className='mt-6'>
                     <Input
                     name="token"
                     onChange={handleChange}
-                    value={values.token}
+                    value={values.token || ''}
                     type='text'
                     placeholder="Введите код из письма"
                     />
                 </div>
                 <div className='mt-6 mb-20'>
-                    <Button>
+                    <Button htmlType="submit">
                         Сохранить
                     </Button>
                 </div>

@@ -1,11 +1,11 @@
 import style from '../register/register.module.css'
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, useHistory } from 'react-router-dom'
-import { useState } from 'react'
+import { FC, FormEvent, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { register } from '../../services/actions/user'
 
-const RegisterPage = () => {
+const RegisterPage: FC = () => {
     const history = useHistory();
     const dispatch = useDispatch();
     const [name, setName] = useState('');
@@ -16,8 +16,9 @@ const RegisterPage = () => {
         'password': password,
         'name': name,
     }
-    const onSubmit = (e) => {
+    const onSubmit = (e: FormEvent) => {
         e.preventDefault();
+        // @ts-ignore: Unreachable code error
         dispatch(register(data)).finally(
             history.push('/login')
         )     
@@ -44,7 +45,7 @@ const RegisterPage = () => {
                     onChange={e => setPassword(e.target.value)}/>
                 </div>
                 <div className="mt-6">
-                    <Button>Зарегистрироваться</Button>
+                    <Button htmlType='submit'>Зарегистрироваться</Button>
                 </div>
             </form>
             <div className={`mt-20 text text_type_main-default text_color_inactive ${style.extra}`}>

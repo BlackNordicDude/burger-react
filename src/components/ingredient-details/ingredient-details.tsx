@@ -1,17 +1,20 @@
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { FC } from 'react';
 import style from '../ingredient-details/ingredient-details.module.css'
+import { TIngredient } from '../../utils/types';
 
-
-const IngredientDetails = () => {
+const IngredientDetails: FC = () => {
     
-    const { id } = useParams();
+    const { id } = useParams<{id? : string}>();
+    
     const {ingredients} = useSelector(store => ({
+  // @ts-ignore: Unreachable code error
         ingredients: store.ingredients.ingredients,
     }))
     if (ingredients.length === 0) return <p>Loading...</p>
 
-    const selectedIngredient = ingredients.find(ingredient => ingredient._id === id)
+    const selectedIngredient = ingredients.find((ingredient: TIngredient ) => ingredient._id === id)
     const {image_large, name, calories, fat, proteins, carbohydrates} = selectedIngredient;
 
     return (

@@ -16,22 +16,22 @@ import { getIngredientsData } from '../../services/actions/ingredients';
 import { useEffect } from 'react';
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-
 import style from './app.module.css';
 import { checkUserAuth } from '../../services/actions/user';
+import { TLocation } from '../../utils/types';
 
 function App() {
-
   const dispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation();
-  
+  const location = useLocation<TLocation>();
   const background = location.state && location.state.background;
 
   const modalClose = () => history.goBack();
 
   useEffect(() => {
+    // @ts-ignore: Unreachable code error
     dispatch(getIngredientsData())
+    // @ts-ignore: Unreachable code error
     dispatch(checkUserAuth())
   },[dispatch]);
 

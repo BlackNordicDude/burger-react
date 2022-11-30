@@ -1,12 +1,16 @@
+import { FC } from 'react'
 import { useSelector } from 'react-redux'
 import src from '../../images/done.png'
 import style from '../order-details/order-details.module.css'
 
 
-const OrderDetails = () => {
+const OrderDetails:FC = () => {
     const { order, orderError, orderRequest } = useSelector(store => ({
+          // @ts-ignore: Unreachable code error
         order: store.order.order,
+          // @ts-ignore: Unreachable code error
         orderError: store.order.orderError,
+          // @ts-ignore: Unreachable code error
         orderRequest: store.order.orderRequest,
     })) 
 

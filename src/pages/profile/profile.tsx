@@ -2,27 +2,29 @@ import { NavLink } from "react-router-dom";
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import style from '../profile/profile.module.css'
 import { updateUserData, logoutUser } from "../../services/actions/user";
-import { useEffect } from "react";
+import { FC, useEffect, FormEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "../../hooks/useForm";
 
-const ProfilePage = () => {
+const ProfilePage: FC = () => {
     const dispatch = useDispatch();
 
     const {nameR, emailR} = useSelector(store => ({
+        // @ts-ignore: Unreachable code error
         nameR: store.user.data.name,
+        // @ts-ignore: Unreachable code error
         emailR: store.user.data.email
     }))
 
     let pass = '*********'
 
-    const {values, handleChange, setValues} = useForm({name: nameR, pass: pass, email: emailR})
+    const {values, handleChange, setValues} = useForm({name: nameR, password: pass, email: emailR})
 
     const cancelChange = () => {
         setValues({
             name: nameR,
             email: emailR,
-            pass: pass
+            password: pass
         })
     }
 
@@ -30,17 +32,19 @@ const ProfilePage = () => {
         setValues({
             name: nameR,
             email: emailR,
-            pass: pass
+            password: pass
         })
     }, [nameR, emailR, pass, setValues])
 
-    const update = () => {
+    const update = (e: FormEvent) => {
+        e.preventDefault();
         console.log('update', values);
-
+    // @ts-ignore: Unreachable code error
         dispatch(updateUserData(values))
     } 
 
     const logout = () => {
+    // @ts-ignore: Unreachable code error
         dispatch(logoutUser());
     }
 
@@ -75,10 +79,10 @@ const ProfilePage = () => {
                     В этом разделе вы можете изменить свои персональные данные
                 </p>
             </div>
-            <form className={style.inputs}>
+            <form className={style.inputs} onSubmit={update}>
                 <div className={`mb-6 ${style.tab}`}>
                     <Input
-                    value={values.name}
+                    value={values.name || ''}
                     name='name'
                     onChange={handleChange}
                     type="text"
@@ -87,7 +91,7 @@ const ProfilePage = () => {
                 </div>
                 <div className={`mb-6 ${style.tab}`}>
                     <Input
-                    value={values.email}
+                    value={values.email || ''}
                     name='email'
                     onChange={handleChange}
                     type="email"
@@ -96,8 +100,8 @@ const ProfilePage = () => {
                 </div>
                 <div className={style.tab}>
                     <Input
-                    value={values.pass}
-                    name='pass'
+                    value={values.password || ''}
+                    name='password'
                     onChange={handleChange}
                     type="password"
                     placeholder="pass"
@@ -106,10 +110,11 @@ const ProfilePage = () => {
                 <div className={`mt-6 ${style.buttons}`}>
                     <Button 
                         onClick={cancelChange}
-                        type="secondary">
+                        type="secondary"
+                        htmlType="reset">
                         Отмена
                     </Button>
-                    <Button onClick={update}>Сохранить</Button>
+                    <Button htmlType="submit">Сохранить</Button>
                 </div>
             </form>
         </div>

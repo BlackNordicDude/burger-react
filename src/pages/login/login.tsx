@@ -1,4 +1,5 @@
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
+import { FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
@@ -9,8 +10,9 @@ const LoginPage = ( ) => {
     const dispatch = useDispatch();
     const {values, handleChange} = useForm({email: '', password: ''})
     
-    const submitForm = (e) => {
+    const submitForm = (e: FormEvent) => {
         e.preventDefault();
+        // @ts-ignore: Unreachable code error
         dispatch(login(values));
     }
 
@@ -20,7 +22,7 @@ const LoginPage = ( ) => {
             <form className={style.form} onSubmit = {submitForm}>
                 <div className="mb-6">
                 <Input
-                    value={values.email}
+                    value={values.email || ''}
                     onChange={handleChange}
                     type={'email'}
                     name='email'
@@ -29,14 +31,14 @@ const LoginPage = ( ) => {
                 </div>
                 <div className="mb-6">
                 <Input
-                    value={values.password}
+                    value={values.password || ''}
                     onChange={handleChange}
                     type={'password'}
                     name='password'
                     placeholder={'Пароль'}
                     />  
                 </div>               
-                <Button>Войти</Button>
+                <Button htmlType="submit">Войти</Button>
             </form>
             <div className={`mt-20 text text_type_main-default text_color_inactive ${style.extra}`}>
                 <p className={style.text}>Вы - новый пользователь</p>
